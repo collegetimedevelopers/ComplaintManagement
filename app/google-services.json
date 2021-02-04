@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "866824912892",
+    "project_id": "sliet-complaint-management",
+    "storage_bucket": "sliet-complaint-management.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:866824912892:android:1904729ab630775c8c3c79",
+        "android_client_info": {
+          "package_name": "ac.sliet.complaintmanagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "866824912892-kuka55l141jghbjsuomrcaj2v1v7unnm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ac.sliet.complaintmanagement",
+            "certificate_hash": "bd00857e1db83d4b43a136821f5f17f898b2942b"
+          }
+        },
+        {
+          "client_id": "866824912892-r8eul861fgk8sdlcdl4veulbhvpsrf4l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvqeLJbckY6pv8bw42EazjZ3Lqszi3HQM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "866824912892-r8eul861fgk8sdlcdl4veulbhvpsrf4l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

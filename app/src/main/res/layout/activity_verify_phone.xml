@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".VerifyPhoneActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="50dp"
+
+            android:src="@drawable/sliet_logo" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="-15dp"
+                android:layout_weight="0.5"
+                android:fontFamily="@font/frank_ruhl_libre_medium"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="+91"
+                android:textSize="17sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:layout_weight="2.4"
+                android:fontFamily="@font/frank_ruhl_libre_medium"
+                android:hint="Enter Your Mobile Number"
+                android:padding="12dp"
+                app:boxStrokeColor="#2626D9">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/frank_ruhl_libre_medium"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="Send OTP"
+                android:textColor="#12B517" />
+        </LinearLayout>
+
+
+        <com.chaos.view.PinView
+            android:id="@+id/firstPinView"
+            style="@style/PinWidget.PinView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:cursorVisible="true"
+            android:layout_marginTop="30dp"
+            android:inputType="number"
+            android:padding="18dp"
+            android:textColor="#5C5959"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:cursorColor="@color/theme_blue"
+            app:cursorWidth="2dp"
+            app:hideLineWhenFilled="true"
+            app:itemCount="6"
+            app:itemHeight="48dp"
+            app:itemRadius="4dp"
+            app:itemSpacing="5dp"
+            app:itemWidth="48dp"
+            app:lineColor="#ACACAC"
+            app:lineWidth="2dp"
+            app:viewType="rectangle" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/verify_phone_btn_verify"
+        android:layout_gravity="bottom"
+        android:fontFamily="@font/frank_ruhl_libre_light"
+        android:gravity="start"
+        android:padding="12dp"
+        android:textAlignment="viewStart"
+        android:text="We will try to verify your number automatically.If entered number is not available in this phone then enter OTP manually."
+        android:textColor="#000" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/verify_phone_btn_verify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="8dp"
+        android:padding="12dp"
+        android:text="Verify" />
+
+</RelativeLayout>
