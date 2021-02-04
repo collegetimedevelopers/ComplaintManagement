@@ -21,11 +21,12 @@ public class SplashActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
+        startActivity(new Intent(SplashActivity.this,VerifyPhoneActivity.class));
+
         if (firebaseUser == null)
         {
-            // needs to login
-            startActivity(new Intent(SplashActivity.this,VerifyPhoneActivity.class));
-        }
+
+         }
         else
         {
             // go to home activity user is loggen in already

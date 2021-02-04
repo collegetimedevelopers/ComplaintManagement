@@ -38,6 +38,7 @@
                 android:textSize="17sp" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/verify_phone_til_number"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -57,6 +58,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/verify_phone_txt_send_otp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -64,20 +66,22 @@
                 android:gravity="center"
                 android:padding="12dp"
                 android:text="Send OTP"
-                android:textColor="#12B517" />
+                android:textColor="#12B517"
+                android:visibility="gone" />
         </LinearLayout>
 
 
         <com.chaos.view.PinView
-            android:id="@+id/firstPinView"
+            android:id="@+id/verify_phone_pinView"
             style="@style/PinWidget.PinView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:cursorVisible="true"
             android:layout_marginTop="30dp"
+            android:cursorVisible="true"
             android:inputType="number"
             android:padding="18dp"
+
             android:textColor="#5C5959"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -103,8 +107,8 @@
         android:fontFamily="@font/frank_ruhl_libre_light"
         android:gravity="start"
         android:padding="12dp"
-        android:textAlignment="viewStart"
         android:text="We will try to verify your number automatically.If entered number is not available in this phone then enter OTP manually."
+        android:textAlignment="viewStart"
         android:textColor="#000" />
 
     <com.google.android.material.button.MaterialButton
