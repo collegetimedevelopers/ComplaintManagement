@@ -31,6 +31,7 @@ public class SplashActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
 
     Unbinder unbinder;
+
     @BindView(R.id.splashProgress)
     ProgressBar contentLoadingProgressBar;
 

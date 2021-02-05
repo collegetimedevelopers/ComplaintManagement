@@ -105,7 +105,7 @@ public class SignUpActivity extends AppCompatActivity {
                     userEmail.setError("Please enter valid Email");
                     return;
                 }
-                System.out.println("Spinner = " + houseCategorySpinner.getSelectedItem().toString());
+
 
                 UserModel userModel = new UserModel();
                 userModel.setPhoneNumber(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getPhoneNumber());
@@ -137,6 +137,7 @@ public class SignUpActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        Common.showSnackBarAtTop("Some Error Occurred", Common.ERROR_COLOR, Color.WHITE, SignUpActivity.this);
 
                     }
                 })

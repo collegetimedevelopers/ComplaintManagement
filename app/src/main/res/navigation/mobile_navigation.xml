@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="ac.sliet.complaintmanagement.UI.Fragments.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:name="ac.sliet.complaintmanagement.UI.Fragments.NewComplaint.NewComplaintFragment"
+        android:label="@string/title_newComplaint"
+        tools:layout="@layout/fragment_newComplaints" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="ac.sliet.complaintmanagement.UI.Fragments.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:name="ac.sliet.complaintmanagement.UI.Fragments.MyComplaints.MyComplaintsFragment"
+        android:label="@string/title_complaints"
+        tools:layout="@layout/fragment_my_complaints" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="ac.sliet.complaintmanagement.UI.Fragments.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:name="ac.sliet.complaintmanagement.UI.Fragments.Profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

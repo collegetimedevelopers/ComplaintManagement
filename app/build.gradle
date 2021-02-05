@@ -71,5 +71,7 @@ dependencies {
 //    impl
     implementation 'com.google.firebase:firebase-analytics:18.0.2'
 
+    // country code picker
+    implementation 'com.hbb20:ccp:2.4.5'
 }
 
