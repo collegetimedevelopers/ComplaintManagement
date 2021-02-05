@@ -1,4 +1,4 @@
-package ac.sliet.complaintmanagement.UI.Fragments.home;
+package ac.sliet.complaintmanagement.UI.Fragments.MyComplaints;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,24 +13,29 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import ac.sliet.complaintmanagement.R;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
-public class HomeFragment extends Fragment {
-
-    private HomeViewModel homeViewModel;
+public class MyComplaintsFragment extends Fragment {
+    Unbinder unbinder;
+      private MyComplaintsViewModel myComplaintsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        myComplaintsViewModel =
+                new ViewModelProvider(this).get(MyComplaintsViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_my_complaints, container, false);
+        final TextView textView = root.findViewById(R.id.text_dashboard);
+        myComplaintsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
         });
+
+        unbinder= ButterKnife.bind(this,root);
+
         return root;
     }
 }
