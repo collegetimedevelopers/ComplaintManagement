@@ -13,6 +13,7 @@ public class Common {
 
 
     public static final String USERS_COLLECTION_REF = "Users" ;
+    public static final String COMPLAINT_COLLECTION_REFERENCE = "Complaints" ;
     public static UserModel currentUser;
 
     public  static final String ERROR_COLOR = "#BF0101";

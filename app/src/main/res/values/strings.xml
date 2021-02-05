@@ -10,5 +10,11 @@
         <item>New</item>
     </string-array>
     <string name="complaint_management">Complaint Management</string>
-
+    <string-array name="complaint_category">
+        <item>--Choose Problem Category--</item>
+        <item>Carpentry</item>
+        <item>Electrical</item>
+        <item>Masonry</item>
+        <item>Plumbing</item>
+    </string-array>
 </resources>

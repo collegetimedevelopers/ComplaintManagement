@@ -7,10 +7,10 @@ import java.util.List;
 public class ComplaintModel {
     String complainantName, complainantAddress, phoneNumber, interComNumber, complainantEmail, complaintCategory, complaintDescription, complainantUid;
     boolean postponed;
-    long complaintId;
+    String complaintId;
     int status;
     Timestamp availableOnDate, postponedDate;
-    List<ItemModel>itemsReplaced;
+    List<ItemModel> itemsReplaced;
 
     public ComplaintModel() {
 
@@ -18,7 +18,8 @@ public class ComplaintModel {
 
     public ComplaintModel(String complainantName, String complainantAddress, String phoneNumber, String interComNumber,
                           String complainantEmail, String complaintCategory, String complaintDescription, String complainantUid, boolean postponed,
-                          long complaintId, int status, Timestamp availableOnDate, Timestamp postponedDate, List<ItemModel> itemsReplaced) {
+                          String complaintId, int status, Timestamp availableOnDate, Timestamp postponedDate, List<ItemModel> itemsReplaced)
+    {
         this.complainantName = complainantName;
         this.complainantAddress = complainantAddress;
         this.phoneNumber = phoneNumber;
@@ -107,11 +108,11 @@ public class ComplaintModel {
         this.postponed = postponed;
     }
 
-    public long getComplaintId() {
+    public String getComplaintId() {
         return complaintId;
     }
 
-    public void setComplaintId(long complaintId) {
+    public void setComplaintId(String complaintId) {
         this.complaintId = complaintId;
     }
 
