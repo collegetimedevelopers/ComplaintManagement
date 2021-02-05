@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ComplaintManagement">
-        <activity android:name=".VerifyPhoneActivity"></activity>
+        <activity android:name=".UI.SignUpActivity"></activity>
+        <activity
+            android:name=".UI.MainActivity"
+            android:label="@string/title_activity_main" />
+        <activity android:name=".VerifyPhoneActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

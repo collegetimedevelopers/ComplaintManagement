@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -26,10 +27,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import ac.sliet.complaintmanagement.Common.Common;
+import ac.sliet.complaintmanagement.Model.UserModel;
+import ac.sliet.complaintmanagement.UI.MainActivity;
+import ac.sliet.complaintmanagement.UI.SignUpActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
@@ -72,7 +79,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         onVerificationStateChangedCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                Toast.makeText(getApplicationContext(), "verified", Toast.LENGTH_SHORT).show();
+
                 loginUser(phoneAuthCredential);
 
 
@@ -90,9 +97,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                 forceResendingToken = forceResendingToken;
                 verificationID = verificationId;
 
-                Toast.makeText(getApplicationContext(), "code sent", Toast.LENGTH_SHORT).show();
                 TSnackbar snackbar = TSnackbar.make(findViewById(android.R.id.content), "Code Sent", TSnackbar.LENGTH_LONG);
-                // snackbar.setActionTextColor(Color.WHITE);
                 View snackbarView = snackbar.getView();
                 snackbarView.setBackgroundColor(Color.parseColor("#12B517"));
                 TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
@@ -112,16 +117,11 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-//
-//                        TSnackbar snackbar = TSnackbar.make(findViewById(android.R.id.content), "Logged In Successfully", TSnackbar.LENGTH_LONG);
-//                        // snackbar.setActionTextColor(Color.WHITE);
-//                        View snackbarView = snackbar.getView();
-//                        snackbarView.setBackgroundColor(Color.parseColor("#12B517"));
-//                        TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
-//                        textView.setTextColor(Color.YELLOW);
-//                        snackbar.show();
 
-                        Common.showSnackBarAtTop("Logged In Successfully", "#12B517",Color.WHITE, VerifyPhoneActivity.this);
+                        Common.showSnackBarAtTop("Number Verified Successfully", "#12B517"
+                                , Color.WHITE, VerifyPhoneActivity.this);
+
+                        checkUserInDatabase();
 
 
                     }
@@ -131,6 +131,37 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+
+    private void checkUserInDatabase() {
+
+        FirebaseFirestore.getInstance().collection(Common.USERS_COLLECTION_REF).document(firebaseAuth.getCurrentUser().getUid())
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    UserModel userModel = documentSnapshot.toObject(UserModel.class);
+                    Common.currentUser = userModel;
+                    //user exists goto home
+                    startActivity(new Intent(VerifyPhoneActivity.this, MainActivity.class));
+                    finish();
+                } else {
+                    // user doesn't exist , needs to sign up
+
+                    startActivity(new Intent(VerifyPhoneActivity.this, SignUpActivity.class));
+
+                    finish();
+                }
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Common.showSnackBarAtTop("Some Error occurred", Common.ERROR_COLOR, Color.WHITE, VerifyPhoneActivity.this);
+                    }
+                });
+
     }
 
 
@@ -145,7 +176,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         });
 
 
-        numberLayout.getEditText().addTextChangedListener(new TextWatcher() {
+        Objects.requireNonNull(numberLayout.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -157,9 +188,9 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
                     sendOtp.setVisibility(View.VISIBLE);
 
-                    phoneNumber = new StringBuilder("+91")
-                            .append(numberLayout.getEditText()
-                                    .getText().toString()).toString();
+                    phoneNumber = "+91" +
+                            numberLayout.getEditText()
+                                    .getText().toString();
 
                 } else
                     sendOtp.setVisibility(View.GONE);
@@ -176,15 +207,15 @@ public class VerifyPhoneActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (verificationID != null && !pinView.getText().toString().isEmpty()) {
+                if (verificationID != null && !Objects.requireNonNull(pinView.getText()).toString().isEmpty()) {
                     PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationID, pinView.getText().toString());
                     loginUser(phoneAuthCredential);
                 } else {
                     if (verificationID == null)
-                        Common.showSnackBarAtTop("Please Send OTP First", "#BF0101",Color.WHITE, VerifyPhoneActivity.this);
+                        Common.showSnackBarAtTop("Please Send OTP First", "#BF0101", Color.WHITE, VerifyPhoneActivity.this);
 
-                    if (pinView.getText().toString().isEmpty()) {
-                        Common.showSnackBarAtTop("Please Enter OTP First", "#BF0101", Color.WHITE,VerifyPhoneActivity.this);
+                    if (Objects.requireNonNull(pinView.getText()).toString().isEmpty()) {
+                        Common.showSnackBarAtTop("Please Enter OTP First", "#BF0101", Color.WHITE, VerifyPhoneActivity.this);
 
                     }
                 }

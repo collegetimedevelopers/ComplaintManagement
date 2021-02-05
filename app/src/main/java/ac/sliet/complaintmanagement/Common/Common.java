@@ -7,10 +7,20 @@ import android.widget.TextView;
 
 import com.androidadvance.topsnackbar.TSnackbar;
 
+import ac.sliet.complaintmanagement.Model.UserModel;
+
 public class Common {
 
 
-    public static void showSnackBarAtTop(String text, String color,int textColor, Activity activity)
+    public static final String USERS_COLLECTION_REF = "Users" ;
+    public static UserModel currentUser;
+
+    public  static final String ERROR_COLOR = "#BF0101";
+    public  static final String GREEN_COLOR = "#12B517";
+    public  static final String BLUE_COLOR = "#2626D9";
+
+
+    public static void showSnackBarAtTop(String text, String color, int textColor, Activity activity)
     {
         TSnackbar snackbar = TSnackbar.make(activity.findViewById(android.R.id.content), text, TSnackbar.LENGTH_LONG);
         // snackbar.setActionTextColor(Color.WHITE);
