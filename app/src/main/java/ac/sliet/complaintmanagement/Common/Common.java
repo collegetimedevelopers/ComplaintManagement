@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.androidadvance.topsnackbar.TSnackbar;
 
+import ac.sliet.complaintmanagement.Model.ComplaintModel;
 import ac.sliet.complaintmanagement.Model.UserModel;
 
 public class Common {
@@ -19,6 +20,7 @@ public class Common {
     public  static final String ERROR_COLOR = "#BF0101";
     public  static final String GREEN_COLOR = "#12B517";
     public  static final String BLUE_COLOR = "#2626D9";
+    public static ComplaintModel selectedComplaint;
 
 
     public static void showSnackBarAtTop(String text, String color, int textColor, Activity activity)

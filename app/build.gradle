@@ -41,6 +41,7 @@ dependencies {
 
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
 
     testImplementation 'junit:junit:4.+'
@@ -76,6 +77,12 @@ dependencies {
 
     // Lottie dependency
     implementation "com.airbnb.android:lottie:3.4.0"
+
+    //event bus
+    implementation 'org.greenrobot:eventbus:3.2.0'
+
+    //step View
+    implementation 'com.github.baoyachi:StepView:1.9'
 
 }
 

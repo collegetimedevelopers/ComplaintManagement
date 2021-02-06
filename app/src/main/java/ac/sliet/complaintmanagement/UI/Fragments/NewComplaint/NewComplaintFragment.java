@@ -157,6 +157,7 @@ System.out.println(resultDate+" = Result date");
         complaintModel.setComplaintId(complaintId);
         complaintModel.setStatus(0);
         complaintModel.setPostponed(false);
+        complaintModel.setComplaintDescription(problemDescriptionEdtTxt.getText().toString().trim());
         complaintModel.setPhoneNumber(Common.currentUser.getPhoneNumber());
         complaintModel.setComplaintCategory(complaintCategorySpinner.getSelectedItem().toString());
 

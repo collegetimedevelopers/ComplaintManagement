@@ -18,6 +18,21 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#fff"
+        android:visibility="gone"
         android:id="@+id/my_comp_recycler"/>
 
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/capriola"
+        android:id="@+id/my_com_empty_txt"
+        android:visibility="gone"
+        android:gravity="center"
+        android:text="Your filed complaints will be shown here."
+
+        android:textColor="#7E7B7B"
+        android:textSize="14sp" />
 </RelativeLayout>

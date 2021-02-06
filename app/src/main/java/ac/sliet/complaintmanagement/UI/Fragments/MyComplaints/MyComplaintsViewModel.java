@@ -42,38 +42,24 @@ public class MyComplaintsViewModel extends ViewModel {
 
     private void getComplaintsFromFireStore() {
         FirebaseFirestore.getInstance().collection(Common.COMPLAINT_COLLECTION_REFERENCE)
-                .whereEqualTo("complainantUid", Common.currentUser.getUid())// .orderBy("complaintFilingDate", Query.Direction.DESCENDING)
+                .whereEqualTo("complainantUid", Common.currentUser.getUid())
+                .orderBy("complaintFilingDate", Query.Direction.DESCENDING)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 List<ComplaintModel> tempList = new ArrayList<>();
+
                 if (!queryDocumentSnapshots.isEmpty()) {
-                   for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+
+                   for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments())
+                   {
                         ComplaintModel complaintModel = documentSnapshot.toObject(ComplaintModel.class);
                         tempList.add(complaintModel);
-                       DocumentSnapshot.ServerTimestampBehavior behavior = ESTIMATE;
-                       Date date = documentSnapshot.getDate("complaintFilingDate", behavior);
-//                       System.out.println(date.getTime() +" below");
-//
-//
-//                       complaintModel.setComplaintFilingDate(documentSnapshot.getTimestamp("complaintFilingDate",behavior));
-
-
-//                        String dDate= complaintModel.getComplaintFilingDate().toDate().toString();
-//                       SimpleDateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-//                       try {
-//                           Date cDate = df.parse(dDate);
-//                           System.out.println( cDate.getTime() +" time ");
-//
-//                       } catch (ParseException e) {
-//                           e.printStackTrace();
-//                       }
-
-                       System.out.println(complaintModel.getComplaintFilingDate()+" filing date");
                     }
                     setComplaintsList(tempList);
                 }
                 else {
+                    System.out.println("Not found");
                     setComplaintsList(tempList);
                 }
             }

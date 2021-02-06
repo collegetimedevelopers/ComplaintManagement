@@ -1,9 +1,14 @@
 package ac.sliet.complaintmanagement.Adapters;
 
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.w3c.dom.Text;
 
 import java.text.DateFormat;
@@ -19,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 import ac.sliet.complaintmanagement.Common.Common;
+import ac.sliet.complaintmanagement.Events.OpenComplaintDetailsEvent;
 import ac.sliet.complaintmanagement.Model.ComplaintModel;
 import ac.sliet.complaintmanagement.R;
 import butterknife.BindView;
@@ -27,10 +34,12 @@ import butterknife.Unbinder;
 
 public class MyComplaintsAdapter extends RecyclerView.Adapter<MyComplaintsAdapter.MyViewHolder> {
     List<ComplaintModel> complaintModelList;
+    Activity activity;
     Context context;
 
-    public MyComplaintsAdapter(List<ComplaintModel> complaintModelList, Context context) {
+    public MyComplaintsAdapter(List<ComplaintModel> complaintModelList, Activity activity, Context context) {
         this.complaintModelList = complaintModelList;
+        this.activity = activity;
         this.context = context;
     }
 
@@ -58,6 +67,24 @@ public class MyComplaintsAdapter extends RecyclerView.Adapter<MyComplaintsAdapte
 
         if (complaintModelList.get(position).getStatus() == 0)
             holder.lottieAnimationView.setAnimation(R.raw.pending);
+
+        holder.copyImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Complaint Id", complaintModelList.get(position).getComplaintId());
+                clipboard.setPrimaryClip(clip);
+                Common.showSnackBarAtTop("Copied Successfully",Common.GREEN_COLOR, Color.WHITE,activity);
+            }
+        });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Common.selectedComplaint = complaintModelList.get(position);
+                EventBus.getDefault().post(new OpenComplaintDetailsEvent(true));
+            }
+        });
     }
 
     @Override
@@ -86,6 +113,10 @@ public class MyComplaintsAdapter extends RecyclerView.Adapter<MyComplaintsAdapte
 
         @BindView(R.id.lottie_view_complaints)
         LottieAnimationView lottieAnimationView;
+
+        @BindView(R.id.lay_my_comp_img_copy)
+        ImageView copyImg;
+
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

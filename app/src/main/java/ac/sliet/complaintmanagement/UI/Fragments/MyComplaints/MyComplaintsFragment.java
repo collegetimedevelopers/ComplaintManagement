@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +37,11 @@ public class MyComplaintsFragment extends Fragment {
     @BindView(R.id.my_comp_recycler)
     RecyclerView recyclerView;
 
+    @BindView(R.id.my_com_empty_txt)
+    TextView empty_txt;
+
+    LinearLayoutManager linearLayoutManager;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -45,18 +51,30 @@ public class MyComplaintsFragment extends Fragment {
         myComplaintsViewModel.activity = getActivity();
 
         View root = inflater.inflate(R.layout.fragment_my_complaints, container, false);
-
+        linearLayoutManager = new LinearLayoutManager(getContext());
         unbinder = ButterKnife.bind(this, root);
         progressBar.setVisibility(View.VISIBLE);
         myComplaintsViewModel.getComplaintsList().observe(getViewLifecycleOwner(), new Observer<List<ComplaintModel>>() {
             @Override
             public void onChanged(List<ComplaintModel> complaintModels) {
+                if (complaintModels.isEmpty()|| complaintModels.size()==0)
+                {
+
+                    empty_txt.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                }
+               else  {
+                    empty_txt.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    MyComplaintsAdapter myComplaintsAdapter = new MyComplaintsAdapter(complaintModels, getActivity(),getContext());
+                    recyclerView.setLayoutManager(linearLayoutManager);
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), linearLayoutManager.getOrientation()));
+                    recyclerView.setAdapter(myComplaintsAdapter);
+
+                }
                 progressBar.setVisibility(View.GONE);
 
-                MyComplaintsAdapter myComplaintsAdapter = new MyComplaintsAdapter(complaintModels,getContext());
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setAdapter(myComplaintsAdapter);
             }
         });
 
