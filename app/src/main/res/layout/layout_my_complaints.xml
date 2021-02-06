@@ -25,23 +25,23 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textStyle="normal"
-            android:textColor="#5A5858"
-            android:fontFamily="@font/abril_fatface"
-            android:layout_marginStart="8dp"
-            android:textAlignment="center"
             android:id="@+id/lay_my_comp_txt_comp_date"
-            android:letterSpacing="0.1"
-            android:lineSpacingMultiplier="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-
             android:layout_marginEnd="8dp"
-            android:text="Today at:13:05:06 PM"/>
+            android:fontFamily="@font/cantora_one"
+
+            android:lineSpacingMultiplier="1"
+            android:text="Today at:13:05:06 PM"
+            android:textAlignment="center"
+            android:textColor="#5A5858"
+
+            android:textSize="15sp"
+            android:textStyle="normal" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:layout_width="50dp"

@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 import ac.sliet.complaintmanagement.Model.ComplaintModel;
@@ -39,7 +41,13 @@ public class MyComplaintsAdapter extends RecyclerView.Adapter<MyComplaintsAdapte
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         holder.complaintID.setText(complaintModelList.get(position).getComplaintId());
-        holder.compplaintDate.setText(complaintModelList.get(position).getComplaintFilingDate().toDate().toString());
+
+        Date date = new Date(complaintModelList.get(position).getComplaintFilingDate().toDate().getTime());
+
+        DateFormat dateFormat = android.text.format.DateFormat.getMediumDateFormat(context);
+        DateFormat timeFormat = android.text.format.DateFormat.getTimeFormat(context);
+        holder.compplaintDate.setText(new StringBuilder(timeFormat.format(date)).append("\t on \t").append(dateFormat.format(date)));
+
         holder.complaintIntercom.setText(complaintModelList.get(position).getInterComNumber());
 
     }
