@@ -21,8 +21,19 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.Timestamp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import ac.sliet.complaintmanagement.Common.Common;
 import ac.sliet.complaintmanagement.Model.ComplaintModel;
@@ -53,8 +64,6 @@ public class NewComplaintFragment extends Fragment {
     ProgressBar progressBar;
 
 
-
-
     Unbinder unbinder;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -80,37 +89,62 @@ public class NewComplaintFragment extends Fragment {
         btn_file_complaint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (complaintCategorySpinner.getSelectedItem().toString().equals(getResources().getStringArray(R.array.complaint_category)[0]))
-                {
-                    Common.showSnackBarAtTop("Please select problem category.",Common.ERROR_COLOR, Color.WHITE,getActivity());
+                if (complaintCategorySpinner.getSelectedItem().toString().equals(getResources().getStringArray(R.array.complaint_category)[0])) {
+                    Common.showSnackBarAtTop("Please select problem category.", Common.ERROR_COLOR, Color.WHITE, getActivity());
                     return;
                 }
-                if (problemDescriptionEdtTxt.getText().toString().trim().isEmpty())
-                {
+                if (problemDescriptionEdtTxt.getText().toString().trim().isEmpty()) {
 
-                    Common.showSnackBarAtTop("Please enter problem description.",Common.ERROR_COLOR, Color.WHITE,getActivity());
+                    Common.showSnackBarAtTop("Please enter problem description.", Common.ERROR_COLOR, Color.WHITE, getActivity());
                     return;
                 }
-                if (intercomEdit.getEditText().getText().toString().trim().isEmpty())
-                {
+                if (intercomEdit.getEditText().getText().toString().trim().isEmpty()) {
 
-                    Common.showSnackBarAtTop("Please enter InterCom number.",Common.ERROR_COLOR, Color.WHITE,getActivity());
+                    Common.showSnackBarAtTop("Please enter InterCom number.", Common.ERROR_COLOR, Color.WHITE, getActivity());
                     return;
                 }
 
 
-
+              //  getTimeStampFromFirebase();
                 uploadComplaintToFireStore();
+
             }
         });
 
         return root;
     }
 
+    private void getTimeStampFromFirebase() {
+
+        final DatabaseReference offsetRef = FirebaseDatabase.getInstance().getReference(".info/serverTimeOffset");
+        offsetRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Timestamp offset = dataSnapshot.getValue(Timestamp.class);
+              //  long estimatedServerTimeMs = System.currentTimeMillis() + offset;
+
+                SimpleDateFormat sdf = new SimpleDateFormat("MM dd,yyyy HH:mm");
+                Date resultDate = new Date(offset.toString());
+System.out.println(resultDate+" = Result date");
+             //   listener.onServerTimeLoadSuccess(ordersModel, estimatedServerTimeMs);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+               // listener.onServerTimeLoadFailure(databaseError.getMessage());
+            }
+        });
+
+    }
+
+
+
     private void uploadComplaintToFireStore() {
         progressBar.setVisibility(View.VISIBLE);
 
-        DocumentReference documentReference= FirebaseFirestore.getInstance().collection(Common.COMPLAINT_COLLECTION_REFERENCE).document();
+        DocumentReference documentReference = FirebaseFirestore.getInstance().collection(Common.COMPLAINT_COLLECTION_REFERENCE).document();
         String complaintId = documentReference.getId();
 
         ComplaintModel complaintModel = new ComplaintModel();
@@ -126,12 +160,13 @@ public class NewComplaintFragment extends Fragment {
         complaintModel.setPhoneNumber(Common.currentUser.getPhoneNumber());
         complaintModel.setComplaintCategory(complaintCategorySpinner.getSelectedItem().toString());
 
+       // complaintModel.setComplaintFilingDate(firebase.database.ServerValue.TIMESTAMP);
+
         documentReference.set(complaintModel).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-
-                progressBar.setVisibility(View.GONE);
-                Common.showSnackBarAtTop("Complaint Filed Successfully 😁",Common.GREEN_COLOR,Color.WHITE,getActivity());
+                 progressBar.setVisibility(View.GONE);
+                Common.showSnackBarAtTop("Complaint Filed Successfully 😁", Common.GREEN_COLOR, Color.WHITE, getActivity());
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -139,7 +174,7 @@ public class NewComplaintFragment extends Fragment {
             public void onFailure(@NonNull Exception e) {
                 progressBar.setVisibility(View.GONE);
 
-                Common.showSnackBarAtTop("Failed to File Complaint 😑",Common.ERROR_COLOR,Color.WHITE,getActivity());
+                Common.showSnackBarAtTop("Failed to File Complaint 😑", Common.ERROR_COLOR, Color.WHITE, getActivity());
             }
         });
     }

@@ -1,6 +1,7 @@
 package ac.sliet.complaintmanagement.Model;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.List;
 
@@ -9,16 +10,19 @@ public class ComplaintModel {
     boolean postponed;
     String complaintId;
     int status;
-    Timestamp availableOnDate, postponedDate;
+    Timestamp availableOnDate, postponedDate,complaintFilingDate;
     List<ItemModel> itemsReplaced;
 
     public ComplaintModel() {
 
     }
 
-    public ComplaintModel(String complainantName, String complainantAddress, String phoneNumber, String interComNumber,
-                          String complainantEmail, String complaintCategory, String complaintDescription, String complainantUid, boolean postponed,
-                          String complaintId, int status, Timestamp availableOnDate, Timestamp postponedDate, List<ItemModel> itemsReplaced)
+    public ComplaintModel(String complainantName, String complainantAddress, String phoneNumber,
+                          String interComNumber, String complainantEmail, String complaintCategory,
+                          String complaintDescription, String complainantUid,
+                          boolean postponed, String complaintId, int status,
+                          Timestamp availableOnDate, Timestamp postponedDate,
+                          Timestamp complaintFilingDate, List<ItemModel> itemsReplaced)
     {
         this.complainantName = complainantName;
         this.complainantAddress = complainantAddress;
@@ -33,7 +37,18 @@ public class ComplaintModel {
         this.status = status;
         this.availableOnDate = availableOnDate;
         this.postponedDate = postponedDate;
+        this.complaintFilingDate = complaintFilingDate;
         this.itemsReplaced = itemsReplaced;
+    }
+
+
+    @ServerTimestamp
+    public Timestamp getComplaintFilingDate() {
+        return complaintFilingDate;
+    }
+
+      public void setComplaintFilingDate(Timestamp complaintFilingDate) {
+        this.complaintFilingDate = complaintFilingDate;
     }
 
     public String getComplainantName() {

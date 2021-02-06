@@ -73,5 +73,9 @@ dependencies {
 
     // country code picker
     implementation 'com.hbb20:ccp:2.4.5'
+
+    // Lottie dependency
+    implementation "com.airbnb.android:lottie:3.4.0"
+
 }
 
