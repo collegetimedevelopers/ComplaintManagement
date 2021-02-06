@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="230dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
@@ -48,8 +48,8 @@
             android:layout_height="50dp"
             app:lottie_autoPlay="true"
             android:layout_alignParentRight="true"
-            app:lottie_loop="false"
-            android:id="@+id/lottie_view_orders"/>
+            app:lottie_loop="true"
+            android:id="@+id/lottie_view_complaints"/>
 
     </RelativeLayout>
 
@@ -64,7 +64,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7"
+            android:layout_weight="0.8"
             android:textColor="@color/title_text_color"
             android:text="Complaint Id"
             android:layout_gravity="center"
@@ -92,7 +92,44 @@
             android:id="@+id/lay_my_comp_txt_compID"
             android:fontFamily="@font/frank_ruhl_libre_medium"/>
     </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:padding="10dp">
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:textColor="@color/title_text_color"
+                    android:text="Complaint Category"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/frank_ruhl_libre_medium"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
+                    android:text=":"
+                    android:gravity="center"
+                    android:textColor="#0A4861"
+                    android:textStyle="bold"
+
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.1"
+                    android:textColor="@color/normal_text_color"
+                    android:clickable="true"
+                    android:text="9999-0000"
+                    android:id="@+id/lay_my_comp_txt_comp_category"
+                    android:fontFamily="@font/frank_ruhl_libre_medium"/>
+            </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -103,13 +140,14 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7"
+            android:layout_weight="0.8"
             android:textColor="@color/title_text_color"
             android:text="InterCom Number"
             android:layout_gravity="center"
             android:gravity="center"
             android:textSize="15sp"
             android:fontFamily="@font/frank_ruhl_libre_medium"/>
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -131,6 +169,46 @@
             android:id="@+id/lay_my_comp_txt_intercom"
             android:fontFamily="@font/frank_ruhl_libre_medium"/>
     </LinearLayout>
+
+                <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:textColor="@color/title_text_color"
+            android:text="Complaint Status"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:fontFamily="@font/frank_ruhl_libre_medium"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:text=":"
+            android:gravity="center"
+            android:textColor="#0A4861"
+            android:textStyle="bold"
+
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.2"
+            android:textColor="@color/normal_text_color"
+            android:clickable="true"
+            android:text="NA"
+            android:id="@+id/lay_my_comp_txt_status"
+            android:fontFamily="@font/frank_ruhl_libre_medium"/>
+                </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 

@@ -10,12 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleCoroutineScope;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
+import ac.sliet.complaintmanagement.Common.Common;
 import ac.sliet.complaintmanagement.Model.ComplaintModel;
 import ac.sliet.complaintmanagement.R;
 import butterknife.BindView;
@@ -46,10 +49,15 @@ public class MyComplaintsAdapter extends RecyclerView.Adapter<MyComplaintsAdapte
 
         DateFormat dateFormat = android.text.format.DateFormat.getMediumDateFormat(context);
         DateFormat timeFormat = android.text.format.DateFormat.getTimeFormat(context);
-        holder.compplaintDate.setText(new StringBuilder(timeFormat.format(date)).append("\t on \t").append(dateFormat.format(date)));
+        holder.compplaintDate.setText(new StringBuilder("Filed on \t" + dateFormat.format(date)).append("\t at \t").append(timeFormat.format(date)));
 
         holder.complaintIntercom.setText(complaintModelList.get(position).getInterComNumber());
+        holder.complaintCategory.setText(complaintModelList.get(position).getComplaintCategory());
 
+        holder.complaintStatus.setText(Common.getComplaintStatus(complaintModelList.get(position).getStatus()));
+
+        if (complaintModelList.get(position).getStatus() == 0)
+            holder.lottieAnimationView.setAnimation(R.raw.pending);
     }
 
     @Override
@@ -69,6 +77,15 @@ public class MyComplaintsAdapter extends RecyclerView.Adapter<MyComplaintsAdapte
 
         @BindView(R.id.lay_my_comp_txt_intercom)
         TextView complaintIntercom;
+
+        @BindView(R.id.lay_my_comp_txt_comp_category)
+        TextView complaintCategory;
+
+        @BindView(R.id.lay_my_comp_txt_status)
+        TextView complaintStatus;
+
+        @BindView(R.id.lottie_view_complaints)
+        LottieAnimationView lottieAnimationView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

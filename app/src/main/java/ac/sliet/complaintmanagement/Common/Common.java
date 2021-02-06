@@ -31,4 +31,21 @@ public class Common {
         textView.setTextColor(textColor);
         snackbar.show();
     }
+
+    public static String getComplaintStatus(int status) {
+        switch (status)
+        {
+            case 0:
+                return "Requested";
+            case 1:
+                return "Accepted";
+            case 2:
+                return "Will be attended today";
+
+            default:
+                return "N A";
+
+        }
+
+    }
 }
