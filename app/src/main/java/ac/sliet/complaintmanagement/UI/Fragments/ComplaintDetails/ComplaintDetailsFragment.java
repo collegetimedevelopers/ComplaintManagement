@@ -104,16 +104,20 @@ public class ComplaintDetailsFragment extends Fragment {
         setStatus(complaintModel);
     }
 
-    private void setStatus(ComplaintModel complaintModel)
-    {
+    private void setStatus(ComplaintModel complaintModel) {
 
         List<String> list = new ArrayList<>();
         list.add("Requested");
         list.add("Accepted");
         list.add("Will Be Attended Today");
+
+        if (complaintModel.getStatus() == 3 || complaintModel.isPostponed()) {
+            list.add("Postponed");
+
+        }
         list.add("Completed");
 
-        statusStepView.setStepsViewIndicatorComplectingPosition(list.size() - 3)//设置完成的步数
+        statusStepView.setStepsViewIndicatorComplectingPosition(complaintModel.getStatus() + 1)//设置完成的步数
                 .reverseDraw(false)//default is true
                 .setStepViewTexts(list)
                 .setLinePaddingProportion(0.85f)
@@ -126,7 +130,6 @@ public class ComplaintDetailsFragment extends Fragment {
                 .setStepsViewIndicatorAttentionIcon(ContextCompat.getDrawable(getActivity(), R.drawable.attention));//设置StepsViewIndicator AttentionIcon
 
     }
-
 
 
 }

@@ -30,9 +30,10 @@
                 android:text="Complaint Id"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:layout_marginTop="5dp"
                 android:textColor="#930606"
                 android:id="@+id/comp_detail_comp_id"
-                android:padding="12dp"
+                android:padding="15dp"
                 android:textSize="17sp"
                 android:fontFamily="@font/capriola"/>
 
