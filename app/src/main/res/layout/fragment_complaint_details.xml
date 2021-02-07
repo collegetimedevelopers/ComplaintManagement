@@ -229,6 +229,7 @@
             android:layout_height="350dp"
             app:cardUseCompatPadding="true"
             android:elevation="8dp"
+            android:id="@+id/comp_detail_items_recycler_parent_card"
             app:cardCornerRadius="7dp"
             app:cardElevation="7dp">
 

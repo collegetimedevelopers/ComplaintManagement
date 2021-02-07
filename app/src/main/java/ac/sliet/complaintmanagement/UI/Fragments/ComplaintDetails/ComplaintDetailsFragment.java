@@ -1,5 +1,6 @@
 package ac.sliet.complaintmanagement.UI.Fragments.ComplaintDetails;
 
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -69,6 +70,10 @@ public class ComplaintDetailsFragment extends Fragment {
     TextView postponeComplaint;
     @BindView(R.id.comp_detail_comp_completed)
     TextView completeComplaint;
+
+    @BindView(R.id.comp_detail_items_recycler_parent_card)
+    CardView recyclerParentCard;
+
 
     public static ComplaintDetailsFragment newInstance() {
         return new ComplaintDetailsFragment();
@@ -151,6 +156,16 @@ public class ComplaintDetailsFragment extends Fragment {
         }
 
 
+        // this card will be only shown if threr are items to  show in reycler view
+
+        if (complaintModel.getStatus()==5 && complaintModel.getItemsReplaced().size()!=0)
+        {
+            recyclerParentCard.setVisibility(View.VISIBLE);
+        }
+        else {
+            recyclerParentCard.setVisibility(View.GONE);
+
+        }
 
 
         setStatus(complaintModel);

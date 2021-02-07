@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
@@ -61,6 +63,14 @@ public class MarkCompletedFragment extends Fragment {
     @BindView(R.id.mark_compl_items_parent_cardview)
     CardView recyclerParentCard;
 
+
+    @BindView(R.id.mark_compl_img_satisfied)
+    ImageView satisfiedImg;
+
+    @BindView(R.id.mark_compl_img_unsatisfied)
+    ImageView unsatisfiedImg;
+
+
     public static MarkCompletedFragment newInstance() {
         return new MarkCompletedFragment();
     }
@@ -90,6 +100,8 @@ public class MarkCompletedFragment extends Fragment {
             public void onClick(View v) {
                 satisfiedLayout.setBackgroundColor(getResources().getColor(R.color.satisfied_feedback));
                 unsatisfiedLayout.setBackgroundColor(getResources().getColor(android.R.color.white));
+                satisfiedImg.setBackground(getResources().getDrawable(R.drawable.ic_baseline_thumb_up_selected));
+                unsatisfiedImg.setBackground(getResources().getDrawable(R.drawable.ic_outline_thumb_down));
 
             }
         });
@@ -100,7 +112,23 @@ public class MarkCompletedFragment extends Fragment {
             public void onClick(View v) {
                 unsatisfiedLayout.setBackgroundColor(getResources().getColor(R.color.unsatisfied_feedback));
                 satisfiedLayout.setBackgroundColor(getResources().getColor(android.R.color.white));
+                satisfiedImg.setBackground(getResources().getDrawable(R.drawable.ic_outline_thumb_up_24));
+                unsatisfiedImg.setBackground(getResources().getDrawable(R.drawable.ic_baseline_thumb_down_selected));
 
+            }
+        });
+
+
+        noFresh_DismantleCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                {
+                    recyclerParentCard.setVisibility(View.GONE);
+                }
+                else {
+                    recyclerParentCard.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

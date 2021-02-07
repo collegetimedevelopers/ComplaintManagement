@@ -179,6 +179,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
+                        android:id="@+id/mark_compl_img_satisfied"
                         android:src="@drawable/ic_outline_thumb_up_24"/>
 
                     <TextView
@@ -203,6 +204,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
+                        android:id="@+id/mark_compl_img_unsatisfied"
                         android:src="@drawable/ic_outline_thumb_down"/>
 
                     <TextView
