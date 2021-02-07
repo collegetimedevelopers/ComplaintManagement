@@ -118,6 +118,11 @@ public class NewComplaintFragment extends Fragment {
                     return;
                 }
 
+                if (null==availableDateTimestamp)
+                {
+                    Common.showSnackBarAtTop("Please select your availability date", Common.ERROR_COLOR, Color.WHITE, getActivity());
+                    return;
+                }
 
                 //  getTimeStampFromFirebase();
                 uploadComplaintToFireStore();
