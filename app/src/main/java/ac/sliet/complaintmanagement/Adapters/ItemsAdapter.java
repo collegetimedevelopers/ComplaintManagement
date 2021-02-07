@@ -24,10 +24,12 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
 
     List<ItemModel> itemList;
     Context context;
+    boolean isInEditMode;
 
-    public ItemsAdapter(List<ItemModel> itemList, Context context) {
+    public ItemsAdapter(List<ItemModel> itemList, Context context, boolean isInEditMode) {
         this.itemList = itemList;
         this.context = context;
+        this.isInEditMode = isInEditMode;
     }
 
     @NonNull
@@ -39,6 +41,17 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
+
+        if (isInEditMode)
+        {
+            holder.itemDelete.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            holder.itemDelete.setVisibility(View.GONE);
+
+        }
 
         holder.itemName.setTextColor(itemList.get(position).isNewItem() ? context.getResources().getColor(R.color.mate_green) : context.getResources().getColor(R.color.error_color));
         holder.itemName.setText(itemList.get(position).getItemName());

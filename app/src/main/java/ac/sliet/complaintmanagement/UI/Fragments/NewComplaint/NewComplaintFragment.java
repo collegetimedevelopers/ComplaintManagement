@@ -10,7 +10,6 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,25 +22,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.Timestamp;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.ktx.Firebase;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.GregorianCalendar;
 
 import ac.sliet.complaintmanagement.Common.Common;
 import ac.sliet.complaintmanagement.Model.ComplaintModel;
 import ac.sliet.complaintmanagement.R;
-import ac.sliet.complaintmanagement.UI.SignUpActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -70,6 +58,8 @@ public class NewComplaintFragment extends Fragment {
     CalendarView calendarView_availaibleOnDate;
 
     Unbinder unbinder;
+    Timestamp availableDateTimestamp;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -84,6 +74,9 @@ public class NewComplaintFragment extends Fragment {
 
             }
         });
+
+
+
         unbinder = ButterKnife.bind(this, root);
         calendarView_availaibleOnDate.setMinDate(System.currentTimeMillis() - 1000);
 
@@ -100,6 +93,9 @@ public class NewComplaintFragment extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth)
             {
+                GregorianCalendar cal = new GregorianCalendar(year, month, dayOfMonth);
+
+                 availableDateTimestamp = new Timestamp(cal.getTime());
 
             }
         });
@@ -174,6 +170,7 @@ public class NewComplaintFragment extends Fragment {
         complaintModel.setComplaintId(complaintId);
         complaintModel.setStatus(0);
         complaintModel.setPostponed(false);
+        complaintModel.setAvailableOnDate(availableDateTimestamp);
       //  complaintModel.setAvailableOnDate(calendarView_availaibleOnDate.getsel);
         complaintModel.setComplaintDescription(problemDescriptionEdtTxt.getText().toString().trim());
         complaintModel.setPhoneNumber(Common.currentUser.getPhoneNumber());

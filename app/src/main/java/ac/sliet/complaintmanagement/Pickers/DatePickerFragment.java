@@ -9,11 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 
+import com.google.firebase.Timestamp;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+
+import ac.sliet.complaintmanagement.Common.Common;
+import ac.sliet.complaintmanagement.Events.DateSelectedEvent;
 
 public  class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
@@ -32,7 +37,7 @@ public  class DatePickerFragment extends DialogFragment
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog dialog = new DatePickerDialog(requireActivity(), this, year, month, day);
-        dialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        dialog.getDatePicker().setMinDate(System.currentTimeMillis());
         // Create a new instance of DatePickerDialog and return it
         return dialog;
     }
@@ -48,6 +53,11 @@ public  class DatePickerFragment extends DialogFragment
         calendar.set(Calendar.SECOND,0);
         Date date = calendar.getTime();
 
+        GregorianCalendar cal = new GregorianCalendar(year, month, day);
 
+        Timestamp time = new com.google.firebase.Timestamp(cal.getTime());
+        Common.selectedNextAvailableDate = time;
+
+        EventBus.getDefault().post(new DateSelectedEvent(time));
     }
 }

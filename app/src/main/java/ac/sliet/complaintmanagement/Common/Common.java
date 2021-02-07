@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.androidadvance.topsnackbar.TSnackbar;
+import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class Common {
     public static final int COMPLAINT_STATUS_ATTENDED_ON_POSTPONED_DATE = 4;
     public static final int COMPLAINT_STATUS_COMPLETED = 5;
     public static List<ItemModel> addedItemList =new ArrayList<>();
+    public static Timestamp selectedNextAvailableDate;
 
 
     public static void showSnackBarAtTop(String text, String color, int textColor, Activity activity)

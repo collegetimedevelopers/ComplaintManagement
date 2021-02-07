@@ -3,10 +3,12 @@ package ac.sliet.complaintmanagement.UI.Fragments.ComplaintDetails;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,16 +24,29 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.baoyachi.stepview.VerticalStepView;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.io.LittleEndianDataInputStream;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ac.sliet.complaintmanagement.Adapters.ItemsAdapter;
+import ac.sliet.complaintmanagement.Common.Common;
+import ac.sliet.complaintmanagement.Events.DateSelectedEvent;
 import ac.sliet.complaintmanagement.Events.OpenMarkCompletedEvent;
 import ac.sliet.complaintmanagement.Model.ComplaintModel;
 import ac.sliet.complaintmanagement.Pickers.DatePickerFragment;
@@ -116,7 +131,7 @@ public class ComplaintDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DialogFragment datePicker = new DatePickerFragment(0);
-                datePicker.show(getParentFragmentManager(),"picker");
+                datePicker.show(getParentFragmentManager(), "picker");
 
             }
         });
@@ -128,6 +143,58 @@ public class ComplaintDetailsFragment extends Fragment {
                 EventBus.getDefault().post(new OpenMarkCompletedEvent(true));
             }
         });
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void postponeComplaintOnFirebase(DateSelectedEvent event) {
+
+        Map<String, Object> updateMap = new HashMap<>();
+
+        updateMap.put("availableOnDate", event.getSelectedDate());
+        updateMap.put("postponedDate", FieldValue.serverTimestamp());
+        updateMap.put("postponed", true);
+        updateMap.put("status", Common.COMPLAINT_STATUS_POSTPONED);
+
+
+        FirebaseFirestore.getInstance().collection(Common.COMPLAINT_COLLECTION_REFERENCE)
+                .document(Common.selectedComplaint.getComplaintId())
+                .update(updateMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        Common.showSnackBarAtTop("Postponed Successfully",Common.GREEN_COLOR,Color.WHITE,getActivity());
+
+                        Common.selectedComplaint.setPostponed(true);
+                        Common.selectedComplaint.setStatus(Common.COMPLAINT_STATUS_POSTPONED);
+
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTimeInMillis(System.currentTimeMillis());
+                        Timestamp postponeTime = new com.google.firebase.Timestamp(calendar.getTime());
+                        Common.selectedComplaint.setPostponedDate(postponeTime);
+                        Common.selectedComplaint.setAvailableOnDate(event.getSelectedDate());
+                        // to update ui
+                    //    mViewModel.setComplaintModel(Common.selectedComplaint);
+
+//                        androidx.fragment.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                        if (Build.VERSION.SDK_INT >= 26) {
+//                            ft.setReorderingAllowed(false);
+//                        }                        ft.detach(newInstance()).attach(newInstance()).commit();
+
+
+
+//
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
     }
 
     private void setValuesToFields(ComplaintModel complaintModel) {
@@ -167,7 +234,7 @@ public class ComplaintDetailsFragment extends Fragment {
 
         if (null != complaintModel.getItemsReplaced() && complaintModel.getStatus() == 5 && complaintModel.getItemsReplaced().size() != 0) {
             recyclerParentCard.setVisibility(View.VISIBLE);
-            ItemsAdapter itemsAdapter = new ItemsAdapter(complaintModel.getItemsReplaced(), getContext());
+            ItemsAdapter itemsAdapter = new ItemsAdapter(complaintModel.getItemsReplaced(), getContext(), false);
 
             replacedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             replacedItemsRecyclerView.setHasFixedSize(true);
@@ -185,24 +252,54 @@ public class ComplaintDetailsFragment extends Fragment {
     private void setStatus(ComplaintModel complaintModel) {
 
         List<String> list = new ArrayList<>();
-        list.add("Requested");
-        list.add("Accepted");
-        list.add("Will Be Attended Today");
+        Date filingDate = new Date(complaintModel.getComplaintFilingDate().toDate().getTime());
+        Date availaibleOnDate = new Date(complaintModel.getAvailableOnDate().toDate().getTime());
 
-        if (complaintModel.getStatus() == 3 || complaintModel.isPostponed()) {
-            list.add("Postponed");
+
+        DateFormat dateFormat = android.text.format.DateFormat.getMediumDateFormat(getContext());
+        DateFormat timeFormat = android.text.format.DateFormat.getTimeFormat(getContext());
+
+        list.add("Requested on " + dateFormat.format(filingDate) + " at " + timeFormat.format(filingDate));
+
+        list.add("Accepted");
+
+        if (!complaintModel.isPostponed()) {
+
+            list.add("Will Be Attending on " + dateFormat.format(availaibleOnDate) );
+        } else {
+            Date postponeDate = new Date(complaintModel.getPostponedDate().toDate().getTime());
+
+            list.add("Was Attended on " + dateFormat.format(postponeDate));
         }
+
+
+        if (complaintModel.getStatus() == Common.COMPLAINT_STATUS_POSTPONED || complaintModel.isPostponed()) {
+
+            Date postponeDate = new Date(complaintModel.getPostponedDate().toDate().getTime());
+
+            list.add("Postponed on " + dateFormat.format(postponeDate) + " at " + timeFormat.format(postponeDate));
+
+            if (complaintModel.getStatus() < Common.COMPLAINT_STATUS_COMPLETED)
+            {
+                list.add("Will Be Attending on " + dateFormat.format(availaibleOnDate));
+            } else {
+                list.add("Was Attended on " + dateFormat.format(availaibleOnDate));
+            }
+
+        }
+
+
         if (complaintModel.getStatus() == 5) {
             Date date = new Date(complaintModel.getComplaintClosingDate().toDate().getTime());
 
-            DateFormat dateFormat = android.text.format.DateFormat.getMediumDateFormat(getContext());
-            DateFormat timeFormat = android.text.format.DateFormat.getTimeFormat(getContext());
 
             list.add("Completed on " + dateFormat.format(date) + " at " + timeFormat.format(date));
         } else {
+            Date usersGivenAvailableDate = new Date(complaintModel.getAvailableOnDate().toDate().getTime());
 
-            list.add("Completed");
+            list.add("Would be Completed on " + dateFormat.format(usersGivenAvailableDate));
         }
+
 
         statusStepView.setStepsViewIndicatorComplectingPosition(complaintModel.getStatus() + 1)//设置完成的步数
                 .reverseDraw(false)//default is true
@@ -219,4 +316,18 @@ public class ComplaintDetailsFragment extends Fragment {
     }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
+
+    }
 }

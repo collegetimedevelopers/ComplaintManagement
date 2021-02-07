@@ -116,7 +116,7 @@ public class MarkCompletedFragment extends Fragment {
             public void onChanged(List<ItemModel> itemModels) {
                 itemRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
                 itemRecycler.setHasFixedSize(true);
-                ItemsAdapter itemsAdapter = new ItemsAdapter(itemModels, getContext());
+                ItemsAdapter itemsAdapter = new ItemsAdapter(itemModels, getContext(),true);
                 itemRecycler.setAdapter(itemsAdapter);
             }
         });
