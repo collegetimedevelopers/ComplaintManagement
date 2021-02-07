@@ -13,5 +13,7 @@
     <color name="normal_text_color">#403D3D</color>
     <color name="uncompleted_status_text_color">#939393</color>
     <color name="completed_status_line_color">#29BF0D</color>
+    <color name="satisfied_feedback">#A8FA98</color>
+    <color name="unsatisfied_feedback">#FB9EB0</color>
 
 </resources>

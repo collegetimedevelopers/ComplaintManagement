@@ -11,6 +11,7 @@
     </string-array>
     <string name="complaint_management">Complaint Management</string>
     <string name="title_complaint_detials">Complaint Details</string>
+    <string name="title_mark_completed">Mark Completed</string>
     <string-array name="complaint_category">
         <item>--Choose Problem Category--</item>
         <item>Carpentry</item>

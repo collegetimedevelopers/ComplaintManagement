@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -31,8 +32,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.ktx.Firebase;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import ac.sliet.complaintmanagement.Common.Common;
@@ -63,6 +66,8 @@ public class NewComplaintFragment extends Fragment {
     @BindView(R.id.new_comp_progress)
     ProgressBar progressBar;
 
+    @BindView(R.id.new_comp_cal_availaible_on_date)
+    CalendarView calendarView_availaibleOnDate;
 
     Unbinder unbinder;
 
@@ -71,6 +76,7 @@ public class NewComplaintFragment extends Fragment {
         newComplaintViewModel =
                 new ViewModelProvider(this).get(NewComplaintViewModel.class);
         View root = inflater.inflate(R.layout.fragment_new_complaints, container, false);
+
         newComplaintViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -79,12 +85,24 @@ public class NewComplaintFragment extends Fragment {
             }
         });
         unbinder = ButterKnife.bind(this, root);
+        calendarView_availaibleOnDate.setMinDate(System.currentTimeMillis() - 1000);
+
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,
                 getResources().getStringArray(R.array.complaint_category));
 
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         complaintCategorySpinner.setAdapter(spinnerAdapter);
+
+
+
+        calendarView_availaibleOnDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth)
+            {
+
+            }
+        });
 
         btn_file_complaint.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +123,7 @@ public class NewComplaintFragment extends Fragment {
                 }
 
 
-              //  getTimeStampFromFirebase();
+                //  getTimeStampFromFirebase();
                 uploadComplaintToFireStore();
 
             }
@@ -114,31 +132,30 @@ public class NewComplaintFragment extends Fragment {
         return root;
     }
 
-    private void getTimeStampFromFirebase() {
-
-        final DatabaseReference offsetRef = FirebaseDatabase.getInstance().getReference(".info/serverTimeOffset");
-        offsetRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                Timestamp offset = dataSnapshot.getValue(Timestamp.class);
-              //  long estimatedServerTimeMs = System.currentTimeMillis() + offset;
-
-                SimpleDateFormat sdf = new SimpleDateFormat("MM dd,yyyy HH:mm");
-                Date resultDate = new Date(offset.toString());
-System.out.println(resultDate+" = Result date");
-             //   listener.onServerTimeLoadSuccess(ordersModel, estimatedServerTimeMs);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-               // listener.onServerTimeLoadFailure(databaseError.getMessage());
-            }
-        });
-
-    }
-
+// //   private void getTimeStampFromFirebase() {
+//
+//        final DatabaseReference offsetRef = FirebaseDatabase.getInstance().getReference(".info/serverTimeOffset");
+//        offsetRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                Timestamp offset = dataSnapshot.getValue(Timestamp.class);
+//                //  long estimatedServerTimeMs = System.currentTimeMillis() + offset;
+//
+//                SimpleDateFormat sdf = new SimpleDateFormat("MM dd,yyyy HH:mm");
+//                Date resultDate = new Date(offset.toString());
+//                System.out.println(resultDate + " = Result date");
+//                //   listener.onServerTimeLoadSuccess(ordersModel, estimatedServerTimeMs);
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                // listener.onServerTimeLoadFailure(databaseError.getMessage());
+//            }
+//        });
+//
+//    }
 
 
     private void uploadComplaintToFireStore() {
@@ -157,16 +174,17 @@ System.out.println(resultDate+" = Result date");
         complaintModel.setComplaintId(complaintId);
         complaintModel.setStatus(0);
         complaintModel.setPostponed(false);
+      //  complaintModel.setAvailableOnDate(calendarView_availaibleOnDate.getsel);
         complaintModel.setComplaintDescription(problemDescriptionEdtTxt.getText().toString().trim());
         complaintModel.setPhoneNumber(Common.currentUser.getPhoneNumber());
         complaintModel.setComplaintCategory(complaintCategorySpinner.getSelectedItem().toString());
 
-       // complaintModel.setComplaintFilingDate(firebase.database.ServerValue.TIMESTAMP);
+        // complaintModel.setComplaintFilingDate(firebase.database.ServerValue.TIMESTAMP);
 
         documentReference.set(complaintModel).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                 progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 Common.showSnackBarAtTop("Complaint Filed Successfully 😁", Common.GREEN_COLOR, Color.WHITE, getActivity());
 
             }

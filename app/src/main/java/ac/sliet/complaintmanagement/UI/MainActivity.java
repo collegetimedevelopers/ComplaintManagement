@@ -18,6 +18,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import ac.sliet.complaintmanagement.Events.OpenComplaintDetailsEvent;
+import ac.sliet.complaintmanagement.Events.OpenMarkCompletedEvent;
 import ac.sliet.complaintmanagement.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,7 +47,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void OpenComplaintDetails(OpenMarkCompletedEvent event) {
+        if (event.isOpenMarkCompleted())
+            navController.navigate(R.id.navigation_complaint_mark_completed);
 
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // this is to handle onbackpress when back button is pressed of toolbar in fragments opened by navigator ( like complaint detail )

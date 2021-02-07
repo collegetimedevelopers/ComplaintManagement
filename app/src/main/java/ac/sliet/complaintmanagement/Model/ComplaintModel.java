@@ -10,6 +10,7 @@ public class ComplaintModel {
     boolean postponed;
     String complaintId;
     int status;
+    boolean satisfactory;
     Timestamp availableOnDate, postponedDate,complaintFilingDate;
     List<ItemModel> itemsReplaced;
 
@@ -17,30 +18,13 @@ public class ComplaintModel {
 
     }
 
-    public ComplaintModel(String complainantName, String complainantAddress, String phoneNumber,
-                          String interComNumber, String complainantEmail, String complaintCategory,
-                          String complaintDescription, String complainantUid,
-                          boolean postponed, String complaintId, int status,
-                          Timestamp availableOnDate, Timestamp postponedDate,
-                          Timestamp complaintFilingDate, List<ItemModel> itemsReplaced)
-    {
-        this.complainantName = complainantName;
-        this.complainantAddress = complainantAddress;
-        this.phoneNumber = phoneNumber;
-        this.interComNumber = interComNumber;
-        this.complainantEmail = complainantEmail;
-        this.complaintCategory = complaintCategory;
-        this.complaintDescription = complaintDescription;
-        this.complainantUid = complainantUid;
-        this.postponed = postponed;
-        this.complaintId = complaintId;
-        this.status = status;
-        this.availableOnDate = availableOnDate;
-        this.postponedDate = postponedDate;
-        this.complaintFilingDate = complaintFilingDate;
-        this.itemsReplaced = itemsReplaced;
+    public boolean isSatisfactory() {
+        return satisfactory;
     }
 
+    public void setSatisfactory(boolean satisfactory) {
+        this.satisfactory = satisfactory;
+    }
 
     @ServerTimestamp
     public Timestamp getComplaintFilingDate() {

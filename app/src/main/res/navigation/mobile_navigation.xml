@@ -32,4 +32,11 @@
         tools:layout="@layout/fragment_complaint_details" >
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_complaint_mark_completed"
+        android:name="ac.sliet.complaintmanagement.UI.Fragments.MarkCompleted.MarkCompletedFragment"
+        android:label="@string/title_mark_completed"
+        tools:layout="@layout/fragment_mark_completed" >
+    </fragment>
+
 </navigation>
