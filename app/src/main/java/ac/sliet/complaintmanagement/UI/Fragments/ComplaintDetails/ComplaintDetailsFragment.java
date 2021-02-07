@@ -2,6 +2,7 @@ package ac.sliet.complaintmanagement.UI.Fragments.ComplaintDetails;
 
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -33,6 +34,7 @@ import java.util.List;
 import ac.sliet.complaintmanagement.Adapters.ItemsAdapter;
 import ac.sliet.complaintmanagement.Events.OpenMarkCompletedEvent;
 import ac.sliet.complaintmanagement.Model.ComplaintModel;
+import ac.sliet.complaintmanagement.Pickers.DatePickerFragment;
 import ac.sliet.complaintmanagement.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -113,6 +115,8 @@ public class ComplaintDetailsFragment extends Fragment {
         postponeComplaint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DialogFragment datePicker = new DatePickerFragment(0);
+                datePicker.show(getParentFragmentManager(),"picker");
 
             }
         });
