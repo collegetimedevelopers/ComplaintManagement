@@ -8,219 +8,393 @@
 
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/mark_compl_btn_close_complaint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Close Complaint"
         android:layout_alignParentBottom="true"
+        android:backgroundTint="#05A151"
         android:padding="12dp"
-        android:id="@+id/mark_compl_btn_close_complaint"
-        android:backgroundTint="#05A151"/>
+        android:text="Close Complaint" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/mark_compl_btn_close_complaint">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
-
-        <androidx.cardview.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="8dp"
+            android:orientation="vertical">
 
-            app:cardElevation="7dp">
 
-            <CheckBox
-                android:id="@+id/mark_compl_no_fresh_check"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:fontFamily="@font/frank_ruhl_libre_medium"
-                android:padding="22dp"
-                android:text="No Fresh Material used and No Material Dismanteled" />
-        </androidx.cardview.widget.CardView>
+                android:elevation="8dp"
 
+                app:cardElevation="7dp">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:elevation="8dp"
-            android:id="@+id/mark_compl_items_parent_cardview"
-            app:cardCornerRadius="7dp"
-            app:cardElevation="7dp"
-            app:cardUseCompatPadding="true">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="12dp">
-
-                <TextView
+                <CheckBox
+                    android:id="@+id/mark_compl_no_fresh_check"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:fontFamily="@font/frank_ruhl_libre_medium"
-                    android:gravity="center"
-                    android:padding="12dp"
-                    android:text="Enter Details of Fresh and Dismanteled Materials"
-                    android:textSize="15sp" />
+                    android:padding="22dp"
+                    android:text="No Fresh Material used and No Material Dismanteled" />
+            </androidx.cardview.widget.CardView>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="#D1D1D1" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:id="@+id/mark_compl_item_recycler"
-                    android:layout_height="250dp"
-                    android:layout_marginTop="10dp" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/mark_compl_items_parent_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="590dp"
+                android:elevation="8dp"
+                app:cardCornerRadius="7dp"
+                app:cardElevation="7dp"
+                app:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="12dp">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.7"
+                        android:fontFamily="@font/frank_ruhl_libre_medium"
                         android:gravity="center"
-                        android:id="@+id/mark_compl_item_name"
+                        android:padding="12dp"
+                        android:text="Enter Details of Fresh and Dismanteled Materials"
+                        android:textSize="15sp" />
 
-                        app:boxStrokeColor="#2626D9"
-                        android:hint="Item Name">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#D1D1D1" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
 
-                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/mark_compl_item_qty"
+                        android:layout_marginBottom="-2dp"
+                        android:orientation="vertical">
 
-                        app:boxStrokeColor="#2626D9"
-                        android:layout_weight="0.8"
-                        android:gravity="center"
-                        android:hint="Item Qty.">
-
-                        <com.google.android.material.textfield.TextInputEditText
+                        <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:inputType="datetime"
-                            android:gravity="center"/>
+                            android:backgroundTint="#fff"
+                            android:textStyle="italic">
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal"
+                                android:padding="2dp"
+                                android:weightSum="10">
 
 
-                    <Spinner
-                        android:layout_width="0dp"
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="5"
+                                    android:background="@android:color/white"
+                                    android:gravity="center"
+                                    android:paddingStart="9dp">
+
+                                    <TextView
+                                        android:id="@+id/txt_added_item_name"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:fontFamily="@font/frank_ruhl_libre_medium"
+                                        android:gravity="start|center_vertical"
+                                        android:hint="Item Name"
+                                        android:maxLines="2"
+                                        android:background="#fff"
+
+                                        android:textAlignment="viewStart"
+
+                                        android:textSize="15sp" />
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="2.5"
+                                    android:background="@android:color/white"
+                                    android:gravity="center"
+                                    android:paddingStart="9dp">
+
+                                    <TextView
+                                        android:id="@+id/txt_added_item_gp_no"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/frank_ruhl_libre_medium"
+                                        android:gravity="start|center_vertical"
+                                        android:hint="G.P No."
+                                        android:maxLines="2"
+
+                                        android:textAlignment="viewStart"
+
+                                        android:textSize="15sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginBottom="4dp"
+                                    android:layout_weight="1"
+                                    android:background="#fff"
+                                    android:gravity="center"
+                                    android:padding="1dp">
+
+                                    <TextView
+                                        android:id="@+id/added_item_quantity"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center_vertical"
+                                        android:background="#fff"
+                                        android:fontFamily="@font/frank_ruhl_libre_medium"
+                                        android:gravity="center"
+                                        android:text="Qty." />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+
+                                    android:layout_weight="1.4"
+                                    android:background="@android:color/white"
+                                    android:gravity="end">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+
+                                        android:layout_gravity="center_vertical"
+                                        android:gravity="center_horizontal"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/deleted_itemInCart_acknowledge"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="center_horizontal"
+                                            android:fontFamily="@font/frank_ruhl_libre_medium"
+                                            android:text="Delete" />
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/mark_compl_item_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_marginTop="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:id="@+id/mark_compl_spinner"
-                        android:gravity="center"
-                        android:layout_gravity="center"/>
+                        android:orientation="horizontal"
+                        android:weightSum="2">
 
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/mark_compl_item_name"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:gravity="center"
+
+                            android:hint="Item Name"
+                            app:boxStrokeColor="#2626D9">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/mark_compl_item_qty"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+
+                            android:layout_weight="0.5"
+                            android:gravity="center"
+                            android:hint="Item Qty."
+                            android:padding="5dp"
+                            app:boxStrokeColor="#2626D9">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:inputType="datetime" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/mark_compl_item_gp_no"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.3"
+                            android:gravity="center"
+
+                            android:hint="Item G.P No."
+                            app:boxStrokeColor="#2626D9">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <Spinner
+                            android:id="@+id/mark_compl_spinner"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.7"
+                            android:gravity="center"
+                            android:padding="10dp" />
+
+
+                    </LinearLayout>
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/mark_compl_btn_add_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="17dp"
+                        android:padding="12dp"
+                        android:text="add Item" />
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
 
-                <com.google.android.material.button.MaterialButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="17dp"
-                    android:padding="12dp"
-                    android:text="add Item"
-                    android:id="@+id/mark_compl_btn_add_item"
-                    />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardUseCompatPadding="true"
-            app:cardCornerRadius="6dp"
-            app:cardElevation="12dp">
-
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="12dp"
-                    android:text="Whether you satisfied with the service provided ?"
-                    android:fontFamily="@font/cantora_one"
-                    android:textSize="16sp"
-                    android:textColor="@color/title_text_color"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="12dp"
-                    android:id="@+id/mark_compl_layout_satisfied"
-                    >
-
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:id="@+id/mark_compl_img_satisfied"
-                        android:src="@drawable/ic_outline_thumb_up_24"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="Satisfied"
-                        android:gravity="center"
-                        android:textColor="@color/normal_text_color"
-                        android:fontFamily="@font/capriola"
-                        android:layout_marginLeft="10dp"/>
-                </LinearLayout>
+                app:cardCornerRadius="6dp"
+                app:cardElevation="12dp"
+                app:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="12dp"
-                    android:id="@+id/mark_compl_layout_unsatisfied">
-
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:id="@+id/mark_compl_img_unsatisfied"
-                        android:src="@drawable/ic_outline_thumb_down"/>
+                    android:orientation="vertical"
+                    android:padding="12dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="Unsatisfied"
-                        android:gravity="center"
-                        android:textColor="@color/normal_text_color"
-                        android:fontFamily="@font/capriola"
-                        android:layout_marginLeft="10dp"/>
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/cantora_one"
+                        android:padding="12dp"
+                        android:text="Whether you are satisfied with the service provided ?"
+                        android:textColor="@color/title_text_color"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:id="@+id/mark_compl_layout_satisfied"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+
+                        <ImageView
+                            android:id="@+id/mark_compl_img_satisfied"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/ic_outline_thumb_up_24" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:fontFamily="@font/capriola"
+                            android:gravity="center"
+                            android:text="Satisfied"
+                            android:textColor="@color/normal_text_color" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/mark_compl_layout_unsatisfied"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+
+                        <ImageView
+                            android:id="@+id/mark_compl_img_unsatisfied"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/ic_outline_thumb_down" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:fontFamily="@font/capriola"
+                            android:gravity="center"
+                            android:text="Unsatisfied"
+                            android:textColor="@color/normal_text_color" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/cantora_one"
+                        android:padding="12dp"
+                        android:text="Write a comment about your experience."
+                        android:textColor="@color/title_text_color"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/mark_compl_edt_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:fontFamily="@font/frank_ruhl_libre_light"
+                        android:hint="Max 100 Characters"
+                        android:maxLength="100"
+                        android:textColor="@color/normal_text_color" />
                 </LinearLayout>
 
 
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-    </LinearLayout>
-</ScrollView>
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

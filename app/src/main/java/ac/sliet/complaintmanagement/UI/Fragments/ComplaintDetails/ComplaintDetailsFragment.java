@@ -11,6 +11,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ac.sliet.complaintmanagement.Adapters.ItemsAdapter;
 import ac.sliet.complaintmanagement.Events.OpenMarkCompletedEvent;
 import ac.sliet.complaintmanagement.Model.ComplaintModel;
 import ac.sliet.complaintmanagement.R;
@@ -73,7 +76,8 @@ public class ComplaintDetailsFragment extends Fragment {
 
     @BindView(R.id.comp_detail_items_recycler_parent_card)
     CardView recyclerParentCard;
-
+@BindView(R.id.comp_detail_comp_items_recycler)
+RecyclerView replacedItemsRecyclerView;
 
     public static ComplaintDetailsFragment newInstance() {
         return new ComplaintDetailsFragment();
@@ -93,6 +97,8 @@ public class ComplaintDetailsFragment extends Fragment {
             public void onChanged(ComplaintModel complaintModel) {
                 if (complaintModel != null) {
                     setValuesToFields(complaintModel);
+
+
                 }
             }
         });
@@ -158,11 +164,17 @@ public class ComplaintDetailsFragment extends Fragment {
 
         // this card will be only shown if threr are items to  show in reycler view
 
-        if (complaintModel.getStatus()==5 && complaintModel.getItemsReplaced().size()!=0)
+        if (null!= complaintModel.getItemsReplaced() && complaintModel.getStatus()==5 && complaintModel.getItemsReplaced().size()!=0)
         {
             recyclerParentCard.setVisibility(View.VISIBLE);
+            ItemsAdapter itemsAdapter=new ItemsAdapter(complaintModel.getItemsReplaced(),getContext());
+
+            replacedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            replacedItemsRecyclerView.setHasFixedSize(true);
+            replacedItemsRecyclerView.setAdapter(itemsAdapter);
         }
         else {
+
             recyclerParentCard.setVisibility(View.GONE);
 
         }

@@ -7,7 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="error_color">#BF0101</color>>
+    <color name="error_color">#AF0909</color>>
+    <color name="mate_green">#07A509</color>>
     <color name="theme_blue">#2626D9</color>
     <color name="title_text_color">#787878</color>
     <color name="normal_text_color">#403D3D</color>

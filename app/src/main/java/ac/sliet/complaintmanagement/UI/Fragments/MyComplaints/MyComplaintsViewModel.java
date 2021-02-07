@@ -55,6 +55,8 @@ public class MyComplaintsViewModel extends ViewModel {
                    {
                         ComplaintModel complaintModel = documentSnapshot.toObject(ComplaintModel.class);
                         tempList.add(complaintModel);
+                        if (null!=complaintModel.getItemsReplaced())
+                        System.out.println("replaced item = "+complaintModel.getItemsReplaced().size());
                     }
                     setComplaintsList(tempList);
                 }

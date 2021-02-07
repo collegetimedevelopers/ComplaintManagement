@@ -65,8 +65,26 @@ public class MyComplaintsAdapter extends RecyclerView.Adapter<MyComplaintsAdapte
 
         holder.complaintStatus.setText(Common.getComplaintStatus(complaintModelList.get(position).getStatus()));
 
-        if (complaintModelList.get(position).getStatus() == 0)
+
+
+        if (complaintModelList.get(position).getStatus() == Common.COMPLAINT_STATUS_REQUESTED)
             holder.lottieAnimationView.setAnimation(R.raw.pending);
+
+        if (complaintModelList.get(position).getStatus() == Common.COMPLAINT_STATUS_ACCEPTED)
+            holder.lottieAnimationView.setAnimation(R.raw.accepted);
+
+        if (complaintModelList.get(position).getStatus() == Common.COMPLAINT_STATUS_ATTENDED_TODAY
+                || complaintModelList.get(position).getStatus() == Common.COMPLAINT_STATUS_ATTENDED_ON_POSTPONED_DATE)
+            holder.lottieAnimationView.setAnimation(R.raw.attending);
+
+
+        if (complaintModelList.get(position).getStatus() == Common.COMPLAINT_STATUS_POSTPONED)
+            holder.lottieAnimationView.setAnimation(R.raw.postpone);
+
+        if (complaintModelList.get(position).getStatus() == Common.COMPLAINT_STATUS_COMPLETED)
+            holder.lottieAnimationView.setAnimation(R.raw.completed);
+
+
 
         holder.copyImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +92,7 @@ public class MyComplaintsAdapter extends RecyclerView.Adapter<MyComplaintsAdapte
                 ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("Complaint Id", complaintModelList.get(position).getComplaintId());
                 clipboard.setPrimaryClip(clip);
-                Common.showSnackBarAtTop("Copied Successfully",Common.GREEN_COLOR, Color.WHITE,activity);
+                Common.showSnackBarAtTop("Copied Successfully", Common.GREEN_COLOR, Color.WHITE, activity);
             }
         });
 

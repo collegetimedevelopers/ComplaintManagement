@@ -6,16 +6,32 @@ import com.google.firebase.firestore.ServerTimestamp;
 import java.util.List;
 
 public class ComplaintModel {
-    String complainantName, complainantAddress, phoneNumber, interComNumber, complainantEmail, complaintCategory, complaintDescription, complainantUid;
+    String complainantName, complainantAddress, phoneNumber, interComNumber, complainantEmail, complaintCategory, complaintDescription, complainantUid,userComment;
     boolean postponed;
     String complaintId;
     int status;
     boolean satisfactory;
-    Timestamp availableOnDate, postponedDate,complaintFilingDate;
+    Timestamp availableOnDate, postponedDate,complaintFilingDate,complaintClosingDate;
     List<ItemModel> itemsReplaced;
 
     public ComplaintModel() {
 
+    }
+
+    public String getUserComment() {
+        return userComment;
+    }
+
+    public void setUserComment(String userComment) {
+        this.userComment = userComment;
+    }
+
+    public Timestamp getComplaintClosingDate() {
+        return complaintClosingDate;
+    }
+
+    public void setComplaintClosingDate(Timestamp complaintClosingDate) {
+        this.complaintClosingDate = complaintClosingDate;
     }
 
     public boolean isSatisfactory() {

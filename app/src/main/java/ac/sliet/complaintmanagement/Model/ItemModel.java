@@ -1,18 +1,21 @@
 package ac.sliet.complaintmanagement.Model;
 
 public class ItemModel {
-    String itemName;
+    String itemName,gpNumber;
     double itemQuantity;
     boolean newItem;
 
-    public ItemModel(String itemName, double itemQuantity, boolean newItem) {
-        this.itemName = itemName;
-        this.itemQuantity = itemQuantity;
-        this.newItem = newItem;
-    }
 
     public ItemModel(){
 
+    }
+
+    public String getGpNumber() {
+        return gpNumber;
+    }
+
+    public void setGpNumber(String gpNumber) {
+        this.gpNumber = gpNumber;
     }
 
     public String getItemName() {

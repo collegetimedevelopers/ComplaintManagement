@@ -1,27 +1,43 @@
 package ac.sliet.complaintmanagement.UI.Fragments.MarkCompleted;
 
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import ac.sliet.complaintmanagement.Adapters.ItemsAdapter;
+import ac.sliet.complaintmanagement.Common.Common;
+import ac.sliet.complaintmanagement.Model.ItemModel;
 import ac.sliet.complaintmanagement.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,6 +59,9 @@ public class MarkCompletedFragment extends Fragment {
 
     @BindView(R.id.mark_compl_item_qty)
     TextInputLayout itemQty;
+
+    @BindView(R.id.mark_compl_item_gp_no)
+    TextInputLayout itemGPNumber;
 
 
     @BindView(R.id.mark_compl_spinner)
@@ -70,6 +89,12 @@ public class MarkCompletedFragment extends Fragment {
     @BindView(R.id.mark_compl_img_unsatisfied)
     ImageView unsatisfiedImg;
 
+    @BindView(R.id.mark_compl_edt_comment)
+    EditText userComment;
+
+    boolean isFeedbackLayoutClicked = false;
+    boolean isSatisfied = false;
+
 
     public static MarkCompletedFragment newInstance() {
         return new MarkCompletedFragment();
@@ -83,6 +108,23 @@ public class MarkCompletedFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_mark_completed, container, false);
         unbinder = ButterKnife.bind(this, root);
 
+
+        mViewModel.getListMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<ItemModel>>() {
+            @Override
+            public void onChanged(List<ItemModel> itemModels) {
+                itemRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+                itemRecycler.setHasFixedSize(true);
+                ItemsAdapter itemsAdapter = new ItemsAdapter(itemModels, getContext());
+                itemRecycler.setAdapter(itemsAdapter);
+            }
+        });
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,
+                getResources().getStringArray(R.array.item_state));
+
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(spinnerAdapter);
 
         if (noFresh_DismantleCheck.isChecked()) {
             recyclerParentCard.setVisibility(View.GONE);
@@ -102,6 +144,8 @@ public class MarkCompletedFragment extends Fragment {
                 unsatisfiedLayout.setBackgroundColor(getResources().getColor(android.R.color.white));
                 satisfiedImg.setBackground(getResources().getDrawable(R.drawable.ic_baseline_thumb_up_selected));
                 unsatisfiedImg.setBackground(getResources().getDrawable(R.drawable.ic_outline_thumb_down));
+                isFeedbackLayoutClicked = true;
+                isSatisfied = true;
 
             }
         });
@@ -114,6 +158,8 @@ public class MarkCompletedFragment extends Fragment {
                 satisfiedLayout.setBackgroundColor(getResources().getColor(android.R.color.white));
                 satisfiedImg.setBackground(getResources().getDrawable(R.drawable.ic_outline_thumb_up_24));
                 unsatisfiedImg.setBackground(getResources().getDrawable(R.drawable.ic_baseline_thumb_down_selected));
+                isFeedbackLayoutClicked = true;
+                isSatisfied = false;
 
             }
         });
@@ -122,13 +168,109 @@ public class MarkCompletedFragment extends Fragment {
         noFresh_DismantleCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                {
+                if (isChecked) {
                     recyclerParentCard.setVisibility(View.GONE);
-                }
-                else {
+                } else {
                     recyclerParentCard.setVisibility(View.VISIBLE);
                 }
+            }
+        });
+
+
+        addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (itemName.getEditText().getText().toString().trim().isEmpty()) {
+                    itemName.setError("Enter valid name");
+                    return;
+                }
+
+                if (itemQty.getEditText().getText().toString().trim().isEmpty() || itemQty.getEditText().getText().toString().trim().equals("0")) {
+                    itemQty.setError("Enter valid name");
+                    return;
+                }
+
+
+                if (spinner.getSelectedItem().toString().equals(getResources().getStringArray(R.array.item_state)[0])) {
+                    Common.showSnackBarAtTop("Please Select Item Status", Common.ERROR_COLOR, Color.WHITE, getActivity());
+                    return;
+                }
+                ItemModel item = new ItemModel();
+
+                item.setItemName(itemName.getEditText().getText().toString().trim());
+                item.setItemQuantity(Double.parseDouble(itemQty.getEditText().getText().toString().trim()));
+                item.setGpNumber(itemGPNumber.getEditText().getText().toString().trim());
+                item.setNewItem(spinner.getSelectedItem().equals(getResources().getStringArray(R.array.item_state)[1]));
+
+                Common.addedItemList.add(item);
+                mViewModel.setListMutableLiveData(Common.addedItemList);
+            }
+        });
+
+
+        closeComplaint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Common.selectedComplaint.getStatus() == 5) {// so that user cant close agian with another values
+                    Common.showSnackBarAtTop("Complaint already closed", Common.ERROR_COLOR, Color.WHITE, getActivity());
+                    return;
+                }
+                if (!isFeedbackLayoutClicked) {
+                    Common.showSnackBarAtTop("Please give feedback.", Common.ERROR_COLOR, Color.WHITE, getActivity());
+                    return;
+                }
+                if (userComment.getText().toString().trim().isEmpty()) {
+                    Common.showSnackBarAtTop("Please write your Comment.", Common.ERROR_COLOR, Color.WHITE, getActivity());
+                    return;
+                }
+
+                updateValuesOnFirestore();
+
+            }
+        });
+    }
+
+    private void updateValuesOnFirestore() {
+
+
+        Map<String, Object> updateMap = new HashMap<>();
+        updateMap.put("status", Common.COMPLAINT_STATUS_COMPLETED);
+        updateMap.put("satisfactory", isSatisfied);
+        updateMap.put("userComment", userComment.getText().toString().trim());
+        updateMap.put("complaintClosingDate", ServerValue.TIMESTAMP.get(".sv"));
+
+        if (!noFresh_DismantleCheck.isChecked()) {
+            System.out.println("size of itemlist = "+Common.addedItemList.size());
+            updateMap.put("itemsReplaced", Common.addedItemList);
+//            Common.addedItemList.clear();
+
+        } else {
+            try {
+                Common.addedItemList.clear();
+            } finally {
+
+            }
+        }
+
+
+        FirebaseFirestore.getInstance().collection(Common.COMPLAINT_COLLECTION_REFERENCE)
+                .document(Common.selectedComplaint.getComplaintId())
+                .update(updateMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                try {
+                    Common.showSnackBarAtTop("Complaint Closed", Common.GREEN_COLOR, Color.WHITE, getActivity());
+                    Common.selectedComplaint.setStatus(Common.COMPLAINT_STATUS_COMPLETED);
+                    Common.addedItemList.clear();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.
+                        out.println("Error in closing complaint = " + e.getMessage());
             }
         });
     }

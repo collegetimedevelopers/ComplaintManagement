@@ -7,7 +7,11 @@ import android.widget.TextView;
 
 import com.androidadvance.topsnackbar.TSnackbar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ac.sliet.complaintmanagement.Model.ComplaintModel;
+import ac.sliet.complaintmanagement.Model.ItemModel;
 import ac.sliet.complaintmanagement.Model.UserModel;
 
 public class Common {
@@ -21,24 +25,27 @@ public class Common {
     public  static final String GREEN_COLOR = "#12B517";
     public  static final String BLUE_COLOR = "#2626D9";
     public static ComplaintModel selectedComplaint;
+
+
     public static final int COMPLAINT_STATUS_REQUESTED = 0;
     public static final int COMPLAINT_STATUS_ACCEPTED = 1;
     public static final int COMPLAINT_STATUS_ATTENDED_TODAY = 2;
     public static final int COMPLAINT_STATUS_POSTPONED = 3;
     public static final int COMPLAINT_STATUS_ATTENDED_ON_POSTPONED_DATE = 4;
     public static final int COMPLAINT_STATUS_COMPLETED = 5;
+    public static List<ItemModel> addedItemList =new ArrayList<>();
 
 
     public static void showSnackBarAtTop(String text, String color, int textColor, Activity activity)
     {
         TSnackbar snackbar = TSnackbar.make(activity.findViewById(android.R.id.content), text, TSnackbar.LENGTH_LONG);
-        // snackbar.setActionTextColor(Color.WHITE);
         View snackbarView = snackbar.getView();
         snackbarView.setBackgroundColor(Color.parseColor(color));
         TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
         textView.setTextColor(textColor);
         snackbar.show();
     }
+
 
     public static String getComplaintStatus(int status) {
         switch (status)
