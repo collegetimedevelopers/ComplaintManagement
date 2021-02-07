@@ -145,14 +145,13 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                     Common.currentUser = userModel;
                     //user exists goto home
                     startActivity(new Intent(VerifyPhoneActivity.this, MainActivity.class));
-                    finish();
                 } else {
                     // user doesn't exist , needs to sign up
 
                     startActivity(new Intent(VerifyPhoneActivity.this, SignUpActivity.class));
 
-                    finish();
                 }
+                finish();
             }
         })
                 .addOnFailureListener(new OnFailureListener() {

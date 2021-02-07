@@ -21,6 +21,12 @@ public class Common {
     public  static final String GREEN_COLOR = "#12B517";
     public  static final String BLUE_COLOR = "#2626D9";
     public static ComplaintModel selectedComplaint;
+    public static final int COMPLAINT_STATUS_REQUESTED = 0;
+    public static final int COMPLAINT_STATUS_ACCEPTED = 1;
+    public static final int COMPLAINT_STATUS_ATTENDED_TODAY = 2;
+    public static final int COMPLAINT_STATUS_POSTPONED = 3;
+    public static final int COMPLAINT_STATUS_ATTENDED_ON_POSTPONED_DATE = 4;
+    public static final int COMPLAINT_STATUS_COMPLETED = 5;
 
 
     public static void showSnackBarAtTop(String text, String color, int textColor, Activity activity)
@@ -37,13 +43,18 @@ public class Common {
     public static String getComplaintStatus(int status) {
         switch (status)
         {
-            case 0:
+            case COMPLAINT_STATUS_REQUESTED:
                 return "Requested";
-            case 1:
+            case COMPLAINT_STATUS_ACCEPTED:
                 return "Accepted";
-            case 2:
+            case COMPLAINT_STATUS_ATTENDED_TODAY:
                 return "Will be attended today";
-
+            case COMPLAINT_STATUS_POSTPONED:
+                return "Postponed by Complainant";
+            case COMPLAINT_STATUS_ATTENDED_ON_POSTPONED_DATE:
+                return "Will be attended on ";
+            case COMPLAINT_STATUS_COMPLETED:
+                return "Complaint Closed";
             default:
                 return "N A";
 

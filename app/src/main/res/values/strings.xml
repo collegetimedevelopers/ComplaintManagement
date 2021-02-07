@@ -6,6 +6,7 @@
     <string name="title_profile">My Profile</string>
 
     <string-array name="house_category">
+
         <item>Old</item>
         <item>New</item>
     </string-array>

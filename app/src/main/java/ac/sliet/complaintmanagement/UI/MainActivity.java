@@ -2,16 +2,14 @@ package ac.sliet.complaintmanagement.UI;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
