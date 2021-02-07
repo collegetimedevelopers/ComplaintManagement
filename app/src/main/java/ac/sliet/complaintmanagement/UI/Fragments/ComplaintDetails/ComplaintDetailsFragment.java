@@ -76,8 +76,8 @@ public class ComplaintDetailsFragment extends Fragment {
 
     @BindView(R.id.comp_detail_items_recycler_parent_card)
     CardView recyclerParentCard;
-@BindView(R.id.comp_detail_comp_items_recycler)
-RecyclerView replacedItemsRecyclerView;
+    @BindView(R.id.comp_detail_comp_items_recycler)
+    RecyclerView replacedItemsRecyclerView;
 
     public static ComplaintDetailsFragment newInstance() {
         return new ComplaintDetailsFragment();
@@ -104,7 +104,7 @@ RecyclerView replacedItemsRecyclerView;
         });
 
         setListeners();
-                return root;
+        return root;
 
     }
 
@@ -144,36 +144,31 @@ RecyclerView replacedItemsRecyclerView;
         complainantEmail.setText(complaintModel.getComplainantEmail());
         complainantAddress.setText(complaintModel.getComplainantAddress());
 
-        if (complaintModel.getStatus()==2 || complaintModel.getStatus()==4)
-        {
+        if (complaintModel.getStatus() == 2 || complaintModel.getStatus() == 4) {
             // user can only interact if the status is  2 means will be attended today or 4 means will be attended on --users selected date--
             // and the postpone button will be disabled if user has once postponed
             postpone_completedLayout.setVisibility(View.VISIBLE);
 
-            if (complaintModel.isPostponed())
-            {
+            if (complaintModel.isPostponed()) {
                 postponeComplaint.setTextColor(getResources().getColor(R.color.uncompleted_status_text_color));
                 postponeComplaint.setEnabled(false);
             }
 
-        }
-        else {
+        } else {
             postpone_completedLayout.setVisibility(View.GONE);
         }
 
 
         // this card will be only shown if threr are items to  show in reycler view
 
-        if (null!= complaintModel.getItemsReplaced() && complaintModel.getStatus()==5 && complaintModel.getItemsReplaced().size()!=0)
-        {
+        if (null != complaintModel.getItemsReplaced() && complaintModel.getStatus() == 5 && complaintModel.getItemsReplaced().size() != 0) {
             recyclerParentCard.setVisibility(View.VISIBLE);
-            ItemsAdapter itemsAdapter=new ItemsAdapter(complaintModel.getItemsReplaced(),getContext());
+            ItemsAdapter itemsAdapter = new ItemsAdapter(complaintModel.getItemsReplaced(), getContext());
 
             replacedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             replacedItemsRecyclerView.setHasFixedSize(true);
             replacedItemsRecyclerView.setAdapter(itemsAdapter);
-        }
-        else {
+        } else {
 
             recyclerParentCard.setVisibility(View.GONE);
 
@@ -193,7 +188,17 @@ RecyclerView replacedItemsRecyclerView;
         if (complaintModel.getStatus() == 3 || complaintModel.isPostponed()) {
             list.add("Postponed");
         }
-        list.add("Completed");
+        if (complaintModel.getStatus() == 5) {
+            Date date = new Date(complaintModel.getComplaintClosingDate().toDate().getTime());
+
+            DateFormat dateFormat = android.text.format.DateFormat.getMediumDateFormat(getContext());
+            DateFormat timeFormat = android.text.format.DateFormat.getTimeFormat(getContext());
+
+            list.add("Completed on " + dateFormat.format(date) + " at " + timeFormat.format(date));
+        } else {
+
+            list.add("Completed");
+        }
 
         statusStepView.setStepsViewIndicatorComplectingPosition(complaintModel.getStatus() + 1)//设置完成的步数
                 .reverseDraw(false)//default is true

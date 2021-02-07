@@ -29,8 +29,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -237,7 +239,7 @@ public class MarkCompletedFragment extends Fragment {
         updateMap.put("status", Common.COMPLAINT_STATUS_COMPLETED);
         updateMap.put("satisfactory", isSatisfied);
         updateMap.put("userComment", userComment.getText().toString().trim());
-        updateMap.put("complaintClosingDate", ServerValue.TIMESTAMP.get(".sv"));
+        updateMap.put("complaintClosingDate", FieldValue.serverTimestamp());
 
         if (!noFresh_DismantleCheck.isChecked()) {
             System.out.println("size of itemlist = "+Common.addedItemList.size());
