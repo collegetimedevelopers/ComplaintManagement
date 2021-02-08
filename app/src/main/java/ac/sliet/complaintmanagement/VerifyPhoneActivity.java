@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +67,11 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
     @BindView(R.id.verify_phone_pinView)
     PinView pinView;
+
+    @BindView(R.id.verify_phone_progress)
+    ProgressBar progressBar;
+
+
     FirebaseAuth firebaseAuth;
 
     @Override
@@ -79,7 +85,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         onVerificationStateChangedCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-
+                System.out.println("In verification completed    ");
                 loginUser(phoneAuthCredential);
 
 
@@ -88,6 +94,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
                 Toast.makeText(VerifyPhoneActivity.this, "error = " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
 
             }
 
@@ -104,7 +111,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                 textView.setTextColor(Color.YELLOW);
                 textView.setGravity(Gravity.CENTER);
                 snackbar.show();
-
+                progressBar.setVisibility(View.GONE);
             }
         };
 
@@ -128,6 +135,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                progressBar.setVisibility(View.GONE);
 
             }
         });
@@ -151,12 +159,16 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                     startActivity(new Intent(VerifyPhoneActivity.this, SignUpActivity.class));
 
                 }
+                progressBar.setVisibility(View.GONE);
+
                 finish();
             }
         })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        progressBar.setVisibility(View.GONE);
+
                         Common.showSnackBarAtTop("Some Error occurred", Common.ERROR_COLOR, Color.WHITE, VerifyPhoneActivity.this);
                     }
                 });
@@ -207,6 +219,8 @@ public class VerifyPhoneActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (verificationID != null && !Objects.requireNonNull(pinView.getText()).toString().isEmpty()) {
+                    progressBar.setVisibility(View.VISIBLE);
+
                     PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationID, pinView.getText().toString());
                     loginUser(phoneAuthCredential);
                 } else {
@@ -225,6 +239,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
 
     private void sendOTPToUser() {
+        progressBar.setVisibility(View.VISIBLE);
 
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(firebaseAuth)
