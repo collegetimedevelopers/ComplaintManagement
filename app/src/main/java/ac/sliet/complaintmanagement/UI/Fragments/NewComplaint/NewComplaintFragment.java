@@ -133,30 +133,6 @@ public class NewComplaintFragment extends Fragment {
         return root;
     }
 
-// //   private void getTimeStampFromFirebase() {
-//
-//        final DatabaseReference offsetRef = FirebaseDatabase.getInstance().getReference(".info/serverTimeOffset");
-//        offsetRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                Timestamp offset = dataSnapshot.getValue(Timestamp.class);
-//                //  long estimatedServerTimeMs = System.currentTimeMillis() + offset;
-//
-//                SimpleDateFormat sdf = new SimpleDateFormat("MM dd,yyyy HH:mm");
-//                Date resultDate = new Date(offset.toString());
-//                System.out.println(resultDate + " = Result date");
-//                //   listener.onServerTimeLoadSuccess(ordersModel, estimatedServerTimeMs);
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                // listener.onServerTimeLoadFailure(databaseError.getMessage());
-//            }
-//        });
-//
-//    }
 
 
     private void uploadComplaintToFireStore() {
@@ -176,12 +152,9 @@ public class NewComplaintFragment extends Fragment {
         complaintModel.setStatus(0);
         complaintModel.setPostponed(false);
         complaintModel.setAvailableOnDate(availableDateTimestamp);
-      //  complaintModel.setAvailableOnDate(calendarView_availaibleOnDate.getsel);
         complaintModel.setComplaintDescription(problemDescriptionEdtTxt.getText().toString().trim());
         complaintModel.setPhoneNumber(Common.currentUser.getPhoneNumber());
         complaintModel.setComplaintCategory(complaintCategorySpinner.getSelectedItem().toString());
-
-        // complaintModel.setComplaintFilingDate(firebase.database.ServerValue.TIMESTAMP);
 
         documentReference.set(complaintModel).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

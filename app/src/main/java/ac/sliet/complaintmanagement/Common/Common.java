@@ -14,17 +14,18 @@ import java.util.List;
 import ac.sliet.complaintmanagement.Model.ComplaintModel;
 import ac.sliet.complaintmanagement.Model.ItemModel;
 import ac.sliet.complaintmanagement.Model.UserModel;
+import ac.sliet.complaintmanagement.UI.Fragments.ComplaintClosingAcnowledge.ComplaintClosingAcnowledgeFragment;
 
 public class Common {
 
 
-    public static final String USERS_COLLECTION_REF = "Users" ;
-    public static final String COMPLAINT_COLLECTION_REFERENCE = "Complaints" ;
+    public static final String USERS_COLLECTION_REF = "Users";
+    public static final String COMPLAINT_COLLECTION_REFERENCE = "Complaints";
     public static UserModel currentUser;
 
-    public  static final String ERROR_COLOR = "#BF0101";
-    public  static final String GREEN_COLOR = "#12B517";
-    public  static final String BLUE_COLOR = "#2626D9";
+    public static final String ERROR_COLOR = "#BF0101";
+    public static final String GREEN_COLOR = "#12B517";
+    public static final String BLUE_COLOR = "#2626D9";
     public static ComplaintModel selectedComplaint;
 
 
@@ -34,12 +35,13 @@ public class Common {
     public static final int COMPLAINT_STATUS_POSTPONED = 3;
     public static final int COMPLAINT_STATUS_ATTENDED_ON_POSTPONED_DATE = 4;
     public static final int COMPLAINT_STATUS_COMPLETED = 5;
-    public static List<ItemModel> addedItemList =new ArrayList<>();
+    public static List<ItemModel> addedItemList = new ArrayList<>();
     public static Timestamp selectedNextAvailableDate;
 
+    public static boolean has_User_Pressed_Back_Button_on_Acknowledgement_Screen;
+    public static ComplaintClosingAcnowledgeFragment fragment_acknowledge;
 
-    public static void showSnackBarAtTop(String text, String color, int textColor, Activity activity)
-    {
+    public static void showSnackBarAtTop(String text, String color, int textColor, Activity activity) {
         TSnackbar snackbar = TSnackbar.make(activity.findViewById(android.R.id.content), text, TSnackbar.LENGTH_LONG);
         View snackbarView = snackbar.getView();
         snackbarView.setBackgroundColor(Color.parseColor(color));
@@ -50,8 +52,7 @@ public class Common {
 
 
     public static String getComplaintStatus(int status) {
-        switch (status)
-        {
+        switch (status) {
             case COMPLAINT_STATUS_REQUESTED:
                 return "Requested";
             case COMPLAINT_STATUS_ACCEPTED:

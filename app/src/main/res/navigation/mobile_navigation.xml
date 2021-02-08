@@ -16,7 +16,13 @@
         android:name="ac.sliet.complaintmanagement.UI.Fragments.MyComplaints.MyComplaintsFragment"
         android:label="@string/title_complaints"
         tools:layout="@layout/fragment_my_complaints" >
-        </fragment>
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_complaint_details"
+            app:destination="@id/navigation_complaint_details"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/main_nav_graph"
+            app:popUpToInclusive="true"/>
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -30,6 +36,12 @@
         android:name="ac.sliet.complaintmanagement.UI.Fragments.ComplaintDetails.ComplaintDetailsFragment"
         android:label="@string/title_complaint_detials"
         tools:layout="@layout/fragment_complaint_details" >
+        <action
+            android:id="@+id/action_navigation_complaint_details_to_navigation_complaint_mark_completed"
+            app:destination="@id/navigation_complaint_mark_completed"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/main_nav_graph"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
@@ -37,6 +49,26 @@
         android:name="ac.sliet.complaintmanagement.UI.Fragments.MarkCompleted.MarkCompletedFragment"
         android:label="@string/title_mark_completed"
         tools:layout="@layout/fragment_mark_completed" >
+        <action
+            android:id="@+id/action_navigation_complaint_mark_completed_to_navigation_complaint_closing_acknowledge"
+            app:destination="@id/navigation_complaint_closing_acknowledge"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/main_nav_graph"
+            app:popUpToInclusive="true"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_complaint_closing_acknowledge"
+        android:name="ac.sliet.complaintmanagement.UI.Fragments.ComplaintClosingAcnowledge.ComplaintClosingAcnowledgeFragment"
+        android:label="@string/title_closing_acknowledge"
+        tools:layout="@layout/fragment_complaint_closing_acnowledge" >
+        <action
+            android:id="@+id/action_navigation_complaint_closing_acknowledge_to_navigation_dashboard"
+            app:destination="@id/navigation_dashboard"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/main_nav_graph"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
 
 </navigation>

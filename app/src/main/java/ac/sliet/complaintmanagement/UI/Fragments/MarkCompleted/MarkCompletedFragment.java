@@ -10,12 +10,15 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -28,11 +31,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.database.ServerValue;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.lang.reflect.Field;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,8 +119,21 @@ public class MarkCompletedFragment extends Fragment {
             public void onChanged(List<ItemModel> itemModels) {
                 itemRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
                 itemRecycler.setHasFixedSize(true);
-                ItemsAdapter itemsAdapter = new ItemsAdapter(itemModels, getContext(),true);
-                itemRecycler.setAdapter(itemsAdapter);
+
+                // remove item button will not be availaible if the complaint is closed
+                if (Common.selectedComplaint.getStatus() != Common.COMPLAINT_STATUS_COMPLETED) {
+                    ItemsAdapter itemsAdapter = new ItemsAdapter(itemModels, getContext(), true);
+                    itemRecycler.setAdapter(itemsAdapter);
+                } else {
+                    ItemsAdapter itemsAdapter = new ItemsAdapter(itemModels, getContext(), false);
+                    itemRecycler.setAdapter(itemsAdapter);
+                }
+
+
+                if (Common.selectedComplaint.getStatus()==Common.COMPLAINT_STATUS_COMPLETED)
+                {
+                    closeComplaint.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -132,6 +148,7 @@ public class MarkCompletedFragment extends Fragment {
             recyclerParentCard.setVisibility(View.GONE);
 
         }
+
 
         setListeners();
         return root;
@@ -233,7 +250,10 @@ public class MarkCompletedFragment extends Fragment {
     }
 
     private void updateValuesOnFirestore() {
+        //disabling user input
 
+        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put("status", Common.COMPLAINT_STATUS_COMPLETED);
@@ -242,7 +262,7 @@ public class MarkCompletedFragment extends Fragment {
         updateMap.put("complaintClosingDate", FieldValue.serverTimestamp());
 
         if (!noFresh_DismantleCheck.isChecked()) {
-            System.out.println("size of itemlist = "+Common.addedItemList.size());
+            System.out.println("size of itemlist = " + Common.addedItemList.size());
             updateMap.put("itemsReplaced", Common.addedItemList);
 //            Common.addedItemList.clear();
 
@@ -261,9 +281,24 @@ public class MarkCompletedFragment extends Fragment {
             @Override
             public void onSuccess(Void aVoid) {
                 try {
-                    Common.showSnackBarAtTop("Complaint Closed", Common.GREEN_COLOR, Color.WHITE, getActivity());
+                    getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    //Common.showSnackBarAtTop("Complaint Closed", Common.GREEN_COLOR, Color.WHITE, getActivity());
                     Common.selectedComplaint.setStatus(Common.COMPLAINT_STATUS_COMPLETED);
                     Common.addedItemList.clear();
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(System.currentTimeMillis());
+                    Timestamp postponeTime = new com.google.firebase.Timestamp(calendar.getTime());
+                    Common.selectedComplaint.setComplaintClosingDate(postponeTime);
+
+
+                    // below method is used to navigate without pushing fragment in backstack and using mobile navigation direction
+
+
+                    NavOptions.Builder navBuilder = new NavOptions.Builder();
+                    NavOptions navOptions = navBuilder.setPopUpTo(R.id.navigation_complaint_mark_completed,true).build();
+                    NavHostFragment.findNavController(MarkCompletedFragment.this).navigate(R.id.navigation_complaint_closing_acknowledge,null,navOptions);
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -271,6 +306,8 @@ public class MarkCompletedFragment extends Fragment {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                // enabling user input
+                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 System.
                         out.println("Error in closing complaint = " + e.getMessage());
             }

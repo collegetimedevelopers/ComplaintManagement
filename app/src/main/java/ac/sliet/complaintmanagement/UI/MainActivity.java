@@ -3,9 +3,11 @@ package ac.sliet.complaintmanagement.UI;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.navigation.NavOptions;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -15,9 +17,12 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import ac.sliet.complaintmanagement.Common.Common;
 import ac.sliet.complaintmanagement.Events.OpenComplaintDetailsEvent;
 import ac.sliet.complaintmanagement.Events.OpenMarkCompletedEvent;
 import ac.sliet.complaintmanagement.R;
+
+import static androidx.navigation.Navigation.findNavController;
 
 public class MainActivity extends AppCompatActivity {
     NavController navController;
@@ -32,16 +37,18 @@ public class MainActivity extends AppCompatActivity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
                 .build();
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController = findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
     }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void OpenComplaintDetails(OpenComplaintDetailsEvent event) {
+
         if (event.isOpenDetailsFragment())
-        navController.navigate(R.id.navigation_complaint_details);
+            navController.navigate(R.id.navigation_complaint_details);
 
     }
 
@@ -51,12 +58,36 @@ public class MainActivity extends AppCompatActivity {
             navController.navigate(R.id.navigation_complaint_mark_completed);
 
     }
+
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // this is to handle onbackpress when back button is pressed of toolbar in fragments opened by navigator ( like complaint detail )
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
+                if (Common.has_User_Pressed_Back_Button_on_Acknowledgement_Screen)
+                {
+
+
+                    NavOptions.Builder navBuilder = new NavOptions.Builder();
+                    NavOptions navOptions = navBuilder.setPopUpTo(R.id.navigation_complaint_closing_acknowledge,true).build();
+                    NavHostFragment.findNavController(Common.fragment_acknowledge).navigate(R.id.navigation_dashboard,null,navOptions);
+
+                    // below method is used to navigate without pushing fragment in backstack and using mobile navigation direction
+
+                    Common.has_User_Pressed_Back_Button_on_Acknowledgement_Screen =false;
+
+
+                    ActionBar actionBar = getSupportActionBar();
+                    if (actionBar != null) {
+                        actionBar.show();
+                    }
+
+
+                }
+                else
+                    onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -80,6 +111,26 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (Common.has_User_Pressed_Back_Button_on_Acknowledgement_Screen)
+        {
+            // below method is used to navigate without pushing fragment in backstack and using mobile navigation direction
+            NavOptions.Builder navBuilder = new NavOptions.Builder();
+            NavOptions navOptions = navBuilder.setPopUpTo(R.id.navigation_complaint_closing_acknowledge,true).build();
+            NavHostFragment.findNavController(Common.fragment_acknowledge).navigate(R.id.navigation_dashboard,null,navOptions);
+
+
+
+            Common.has_User_Pressed_Back_Button_on_Acknowledgement_Screen =false;
+
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.show();
+            }
+
+        }
+        else
+            super.onBackPressed();
     }
+
+
 }

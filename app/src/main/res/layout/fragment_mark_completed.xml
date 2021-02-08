@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:elevation="8dp"
-
+app:cardUseCompatPadding="true"
                 app:cardElevation="7dp">
 
                 <CheckBox
@@ -50,9 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="590dp"
                 android:elevation="8dp"
-                app:cardCornerRadius="7dp"
-                app:cardElevation="7dp"
-                app:cardUseCompatPadding="true">
+                app:cardCornerRadius="7dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -202,6 +200,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/mark_compl_item_recycler"
                         android:layout_width="match_parent"
+                        android:nestedScrollingEnabled="false"
                         android:layout_height="250dp"
                         android:layout_marginTop="10dp" />
 
@@ -256,6 +255,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
                         android:weightSum="2">
 
                         <com.google.android.material.textfield.TextInputLayout

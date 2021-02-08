@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleCoroutineScope;
+import androidx.navigation.NavOptions;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -28,6 +30,7 @@ import ac.sliet.complaintmanagement.Common.Common;
 import ac.sliet.complaintmanagement.Events.OpenComplaintDetailsEvent;
 import ac.sliet.complaintmanagement.Model.ComplaintModel;
 import ac.sliet.complaintmanagement.R;
+import ac.sliet.complaintmanagement.UI.Fragments.MyComplaints.MyComplaintsFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -100,6 +103,7 @@ public class MyComplaintsAdapter extends RecyclerView.Adapter<MyComplaintsAdapte
             @Override
             public void onClick(View v) {
                 Common.selectedComplaint = complaintModelList.get(position);
+
                 EventBus.getDefault().post(new OpenComplaintDetailsEvent(true));
             }
         });

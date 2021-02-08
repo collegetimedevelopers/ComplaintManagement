@@ -14,6 +14,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,6 +49,7 @@ import java.util.Map;
 import ac.sliet.complaintmanagement.Adapters.ItemsAdapter;
 import ac.sliet.complaintmanagement.Common.Common;
 import ac.sliet.complaintmanagement.Events.DateSelectedEvent;
+import ac.sliet.complaintmanagement.Events.OpenComplaintDetailsEvent;
 import ac.sliet.complaintmanagement.Events.OpenMarkCompletedEvent;
 import ac.sliet.complaintmanagement.Model.ComplaintModel;
 import ac.sliet.complaintmanagement.Pickers.DatePickerFragment;
@@ -140,6 +143,8 @@ public class ComplaintDetailsFragment extends Fragment {
         completeComplaint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 EventBus.getDefault().post(new OpenMarkCompletedEvent(true));
             }
         });
@@ -176,16 +181,17 @@ public class ComplaintDetailsFragment extends Fragment {
                         Common.selectedComplaint.setPostponedDate(postponeTime);
                         Common.selectedComplaint.setAvailableOnDate(event.getSelectedDate());
                         // to update ui
-                    //    mViewModel.setComplaintModel(Common.selectedComplaint);
 
-//                        androidx.fragment.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-//                        if (Build.VERSION.SDK_INT >= 26) {
-//                            ft.setReorderingAllowed(false);
-//                        }                        ft.detach(newInstance()).attach(newInstance()).commit();
+                        try {
+                            getActivity().getSupportFragmentManager().popBackStack();
 
 
+                            EventBus.getDefault().post(new OpenComplaintDetailsEvent(true));
 
-//
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
 
                     }
                 })
@@ -196,6 +202,8 @@ public class ComplaintDetailsFragment extends Fragment {
                     }
                 });
     }
+
+
 
     private void setValuesToFields(ComplaintModel complaintModel) {
 
@@ -299,7 +307,6 @@ public class ComplaintDetailsFragment extends Fragment {
 
             list.add("Would be Completed on " + dateFormat.format(usersGivenAvailableDate));
         }
-
 
         statusStepView.setStepsViewIndicatorComplectingPosition(complaintModel.getStatus() + 1)//设置完成的步数
                 .reverseDraw(false)//default is true
