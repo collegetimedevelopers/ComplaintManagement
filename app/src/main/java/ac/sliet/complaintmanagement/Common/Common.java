@@ -6,15 +6,29 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Message;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import ac.sliet.complaintmanagement.Model.FCMResponse;
+import ac.sliet.complaintmanagement.Model.TokenModel;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 
 import com.androidadvance.topsnackbar.TSnackbar;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.installations.FirebaseInstallations;
+import com.google.firebase.installations.InstallationTokenResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -56,7 +70,7 @@ public class Common {
     public static final String NOTI_TITLE = "title";
     public static final String NOTI_CONTENT = "content";
     public static final String NOTI_CID = "complaintId";
-
+    public static final String TOKEN_REF = "ComplainantToken";
 
     public static List<ItemModel> addedItemList = new ArrayList<>();
     public static Timestamp selectedNextAvailableDate;
@@ -99,26 +113,75 @@ public class Common {
         }
 
     }
-
-
-
-    public static void pushNotificationToTopic(String title,String content,String complaintId,String topic)
+    public static String getMessagingTopic(String topic)
     {
-        Map<String,String> notificationData = new HashMap<>();
+        return new StringBuilder("/topics/").append(topic).toString();
+    }
 
-        notificationData.put(NOTI_TITLE,title);
-        notificationData.put(NOTI_CONTENT,content);
-        notificationData.put(NOTI_CID,complaintId);
 
-        FCMSendData fcmSendData = new FCMSendData("/topics/"+topic,notificationData);
+    public static void pushNotificationToTopic(String title, String content, String complaintId, String topic, Activity activity, ProgressBar progressBar) {
+        Map<String, String> notificationData = new HashMap<>();
 
-        compositeDisposable.add(ifcmService.sendNotification(fcmSendData).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<FCMResponse>() {
+        notificationData.put(NOTI_TITLE, title);
+        notificationData.put(NOTI_CONTENT, content);
+        notificationData.put(NOTI_CID, complaintId);
+
+        FCMSendData fcmSendData = new FCMSendData(getMessagingTopic(topic), notificationData);
+
+        compositeDisposable
+                .add(ifcmService.sendNotification(fcmSendData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<FCMResponse>() {
             @Override
             public void accept(FCMResponse fcmResponse) throws Exception {
-
+                if (fcmResponse.getMessage_id() != 0)
+                {
+                    System.out.println("message id ="+fcmResponse.getMessage_id());
+                    Common.showSnackBarAtTop("Complaint Filed and notified CTO Successfully 😁", Common.GREEN_COLOR, Color.WHITE,activity );
+                    if (null!=progressBar)
+                    {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }
+                else {
+                    System.out.println("Error in noti push= "+fcmResponse.getFailure());
+                    Common.showSnackBarAtTop("Complaint Filed Successfully but failed to notify CTO", Common.GREEN_COLOR, Color.WHITE, activity);
+                    if (null!=progressBar)
+                    {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }
             }
         }));
 
     }
+
+    public static void updateToken(Context context) {
+
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(new OnSuccessListener<String>() {
+            @Override
+            public void onSuccess(String newToken) {
+                try {
+                    FirebaseDatabase.getInstance().getReference(Common.TOKEN_REF).child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .setValue(new TokenModel(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber(), newToken)).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(context,"Some Error occurred",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(context,"Some Error occurred",Toast.LENGTH_SHORT).show();
+            Log.e("UPDATE_TOKEN",e.getMessage());
+        });
+
+    }
+
+
 
 }

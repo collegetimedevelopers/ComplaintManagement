@@ -130,6 +130,7 @@ public class SignUpActivity extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
 
                         Common.showSnackBarAtTop("Signed Up Successfully", Common.GREEN_COLOR, Color.WHITE, SignUpActivity.this);
+                        Common.updateToken(SignUpActivity.this);
                         startActivity(new Intent(SignUpActivity.this,MainActivity.class));
 
                     }

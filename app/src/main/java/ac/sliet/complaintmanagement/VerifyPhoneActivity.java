@@ -166,6 +166,8 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                     UserModel userModel = documentSnapshot.toObject(UserModel.class);
                     Common.currentUser = userModel;
                     //user exists goto home
+                    Common.updateToken(VerifyPhoneActivity.this);
+
                     startActivity(new Intent(VerifyPhoneActivity.this, MainActivity.class));
                 } else {
                     // user doesn't exist , needs to sign up

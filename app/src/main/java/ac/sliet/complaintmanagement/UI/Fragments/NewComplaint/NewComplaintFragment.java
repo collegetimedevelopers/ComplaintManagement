@@ -24,6 +24,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.ktx.Firebase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.GregorianCalendar;
 
@@ -154,8 +156,12 @@ public class NewComplaintFragment extends Fragment {
         documentReference.set(complaintModel)
                 .addOnSuccessListener(aVoid -> {
                     progressBar.setVisibility(View.GONE);
-                    Common.showSnackBarAtTop("Complaint Filed Successfully 😁", Common.GREEN_COLOR, Color.WHITE, getActivity());
-                    //todo: uncomment and call clearFields();
+                    Common.pushNotificationToTopic("New Complaint", "Complaint Filed By " + Common.currentUser.getUserName() + " with complaint id" + complaintModel.getComplaintId(),
+                            complaintModel.getComplaintId(), complaintModel.getComplaintCategory(),
+                            getActivity(),progressBar);
+
+                    clearFields();
+
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {

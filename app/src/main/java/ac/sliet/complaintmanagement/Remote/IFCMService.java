@@ -14,7 +14,7 @@ public interface IFCMService
     @Headers({
             "Content-Type:application/json",
 
-            "Authorization:key=AAAA-_otgV0:APA91bGF_1_WHReHhvBaajWhjQUq6mzUuWov8xIaRCreyPgMnjd0aDaL9PtfOst4YKDdbAMZnUxh9l4vJgbwQ5-N9boiN66Oh2_Gg08GN9upoKu4dx5_M2WeBWQsWwJQehohaFIOBGMK"
+            "Authorization:key=AAAAydLKf_w:APA91bGF6Qp-qw5Io2R1czz3YbM0SSHqqlKa6a9L7-O5XahvvZZBDyWwXUkXlaWRF6rR7h_srb7SWHzF8kdGYUBMMp-HsmdppNrfKwwGNSxzoYz4rxK61aJZ6O6vz2u-IWaIrEF0EMa2"
 
     })
     @POST("fcm/send")

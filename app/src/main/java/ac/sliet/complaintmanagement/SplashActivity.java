@@ -65,6 +65,8 @@ public class SplashActivity extends AppCompatActivity {
                 if (documentSnapshot.exists()) {
                     UserModel userModel = documentSnapshot.toObject(UserModel.class);
                     Common.currentUser = userModel;
+                    Common.updateToken(SplashActivity.this);
+
                     //user exists goto home
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                     finish();

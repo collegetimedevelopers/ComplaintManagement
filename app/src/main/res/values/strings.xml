@@ -30,4 +30,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_closing_acknowledge">Closed</string>
+
+    <string name="default_notification_channel_id">SLIET Complaint Complainant</string>
+
 </resources>
