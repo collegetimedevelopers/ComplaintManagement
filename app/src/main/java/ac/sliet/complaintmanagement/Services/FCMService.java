@@ -27,74 +27,34 @@ import java.util.Random;
 
 import ac.sliet.complaintmanagement.Common.Common;
 import ac.sliet.complaintmanagement.R;
+import ac.sliet.complaintmanagement.SplashActivity;
 import ac.sliet.complaintmanagement.UI.MainActivity;
 
 public class FCMService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         try {
-            Map<String,String> dataRecv= remoteMessage.getData();
+            Map<String, String> dataRecv = remoteMessage.getData();
 
-            if (null!=dataRecv)
-            {  Intent intent = new Intent(this, MainActivity.class);
-                        intent.putExtra("NOTI", true);
-//                     Sy
-                System.out.println("CID = "+dataRecv.get(Common.NOTI_CID));
-             generateNotification(this,new Random().nextInt(),dataRecv.get(Common.NOTI_TITLE),dataRecv.get(Common.NOTI_CONTENT),intent);
+            if (null != dataRecv) {
+                Intent intent = new Intent(this, SplashActivity.class);
+                intent.putExtra(Common.IS_OPENED_FROM_NOTIFICATION, true);
+                intent.putExtra(Common.COMPLAINT_ID_FROM_NOTIFICATION, dataRecv.get(Common.NOTI_CID));
+
+                int status = -1;
+
+                try {
+                    if (dataRecv.containsKey(Common.NOTI_STATUS)) {
+
+                        status = Integer.parseInt(dataRecv.get(Common.NOTI_STATUS));
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+
+                generateNotification(this, new Random().nextInt(), dataRecv.get(Common.NOTI_TITLE), dataRecv.get(Common.NOTI_CONTENT), status, intent);
             }
-//            {
-//
-//                switch (Objects.requireNonNull(dataRecv.get(Common.NOTI_TITLE))) {
-//                    case "Order Cancelled":
-//                    case "Order Delivered": {
-//                        // the order will be now in current orders  so opening orders history
-//
-//                        Intent intent = new Intent(this, MainActivity.class);
-//                        intent.putExtra(Common.OPEN_ORDERS_HISTORY_FROM_NOTIFICATION, true);
-//                        generateNotification(this, new Random().nextInt(), dataRecv.get(Common.NOTI_TITLE), dataRecv.get(Common.NOTI_CONTENT), intent);
-//
-//                        break;
-//                    }
-//                    case "Order Status Updated": {
-//                        // the order will be now in orders history so opening orders history
-//                        Intent intent = new Intent(this, MainActivity.class);
-//                        intent.putExtra(Common.OPEN_CURRENT_ORDERS_FROM_NOTIFICATION, true);
-//                        generateNotification(this, new Random().nextInt(), dataRecv.get(Common.NOTI_TITLE), dataRecv.get(Common.NOTI_CONTENT), intent);
-//                        break;
-//                    }
-//                    case "Message Reply":
-//                    case "New Message": {
-//                        Intent intent = new Intent(this, MainActivity.class);
-//                        intent.putExtra(Common.OPEN_MY_CHATS_FROM_NOTIFICATION, true);
-//
-//                        generateNotification(this, new Random().nextInt(), dataRecv.get(Common.NOTI_TITLE), dataRecv.get(Common.NOTI_CONTENT), intent);
-//
-//                        break;
-//                    }
-//                    //                case "Update Available":
-//                    //                    {
-//                    //                        Intent intent ;//= new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.localkart.localkartcustomer"));
-//                    //
-//                    //                        try {
-//                    //                            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.localkart.localkartcustomer" ));
-//                    //
-//                    //                        } catch (android.content.ActivityNotFoundException anfe) {
-//                    //                            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.localkart.localkartcustomer"));
-//                    //                        }
-//                    //                    generateNotification(this, new Random().nextInt(), dataRecv.get(Common.NOTI_TITLE), dataRecv.get(Common.NOTI_CONTENT), intent);
-//                    //
-//                    //                    break;
-//                    //                    }
-//                    default:
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                            // this  is chutiyappa nothing else don't get confused whenever you see after a long time that for what it is being used
-//                            Common.showNotification(this, new Random().nextInt(), dataRecv.get(Common.NOTI_TITLE), dataRecv.get(Common.NOTI_CONTENT), null);
-//                        }else {
-//                            generateNotification(this, new Random().nextInt(), dataRecv.get(Common.NOTI_TITLE), dataRecv.get(Common.NOTI_CONTENT), null);
-//                        }
-//                        break;
-//                }
-//            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -104,16 +64,16 @@ public class FCMService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
-      //  Common.updateToken(this,s);
+        Common.updateToken(this);
     }
 
-    private void generateNotification(Context context,int id,String title,String content,Intent intent){
+    private void generateNotification(Context context, int id, String title, String content, int status, Intent intent) {
         PendingIntent pendingIntent = null;
 
         if (intent != null) {
             pendingIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
-        String NOTIFICATION_CHANNEL_ID = "local_kart";
+        String NOTIFICATION_CHANNEL_ID = "SLIET_COMPLAINANT";
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -132,23 +92,29 @@ public class FCMService extends FirebaseMessagingService {
         builder.setContentTitle(title).setContentText(content).setAutoCancel(true);
 
 
-        if (title.contains("New Message") || title.contains("Message Reply")) {
+        builder.setSmallIcon(R.drawable.ic_sliet_logo_black);
 
-            builder.setSmallIcon(R.drawable.ic_sliet_logo_black);
-
-        }
-        else {
-            builder.setSmallIcon(R.drawable.ic_sliet_logo_black);
-        }
 
         builder.setPriority(NotificationManager.IMPORTANCE_HIGH).setAutoCancel(true)
-                //.setSubText(context.getResources().getString(R.string.madeinindia))
-
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
-                        R.drawable.attention))
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(content)).setColor(Color.parseColor("#FFFFFFFF"));
+        //.setSubText(context.getResources().getString(R.string.madeinindia))
 
+        if (status != -1) {
+
+            if (status == 1)
+            {
+                builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_accepted));
+                System.out.println("status inside if = "+status);
+
+            }
+            if (status == 2) {
+                builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.attending));
+
+            }
+
+        }
         if (pendingIntent != null)
             builder.setContentIntent(pendingIntent);
         Notification notification = builder.build();

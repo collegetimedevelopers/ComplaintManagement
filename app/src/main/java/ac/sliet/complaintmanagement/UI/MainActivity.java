@@ -27,6 +27,7 @@ import static androidx.navigation.Navigation.findNavController;
 public class MainActivity extends AppCompatActivity {
     NavController navController;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,18 @@ public class MainActivity extends AppCompatActivity {
         navController = findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+
+
+         Common.isAppOpenedFromNotification=   getIntent().getBooleanExtra(Common.IS_OPENED_FROM_NOTIFICATION, false);
+
+         if (Common.isAppOpenedFromNotification)// if the app is opened from notification we will extract complaint id
+         {
+             Common.complaintIdFromNotification = getIntent().getStringExtra(Common.COMPLAINT_ID_FROM_NOTIFICATION);
+             OpenComplaintDetails(new OpenComplaintDetailsEvent(true));
+         }
+
+
 
     }
 

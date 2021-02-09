@@ -46,15 +46,17 @@ public class SplashActivity extends AppCompatActivity {
         firebaseUser = firebaseAuth.getCurrentUser();
 
         contentLoadingProgressBar.setVisibility(View.VISIBLE);
+
         if (firebaseUser == null) {
             startActivity(new Intent(SplashActivity.this, VerifyPhoneActivity.class));
 
         } else {
-            // checkUserInDatabase user is logged in already
+            // checkUserInDatabase: user is logged in already
             checkUserInDatabase();
         }
 
     }
+
 
     private void checkUserInDatabase() {
 
@@ -67,8 +69,18 @@ public class SplashActivity extends AppCompatActivity {
                     Common.currentUser = userModel;
                     Common.updateToken(SplashActivity.this);
 
+                    Intent mainActivityIntent = new Intent(SplashActivity.this, MainActivity.class);
+
+                    if (getIntent().getBooleanExtra(Common.IS_OPENED_FROM_NOTIFICATION, false)) {
+                        // putting these values to handle notification click so that we can automatically open details fragment
+
+                        mainActivityIntent.putExtra(Common.IS_OPENED_FROM_NOTIFICATION, true);
+                        mainActivityIntent.putExtra(Common.COMPLAINT_ID_FROM_NOTIFICATION, getIntent().getStringExtra(Common.COMPLAINT_ID_FROM_NOTIFICATION));
+
+                    }
+
                     //user exists goto home
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    startActivity(mainActivityIntent);
                     finish();
 
                 } else {

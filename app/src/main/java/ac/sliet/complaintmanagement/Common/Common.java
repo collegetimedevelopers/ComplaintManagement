@@ -71,6 +71,9 @@ public class Common {
     public static final String NOTI_CONTENT = "content";
     public static final String NOTI_CID = "complaintId";
     public static final String TOKEN_REF = "ComplainantToken";
+    public static final String IS_OPENED_FROM_NOTIFICATION = "IS_OPENED_FROM_NOTIFICATION";
+    public static final String COMPLAINT_ID_FROM_NOTIFICATION = "COMPLAINT_ID_FROM_NOTIFICATION";
+    public static final String NOTI_STATUS ="status";
 
     public static List<ItemModel> addedItemList = new ArrayList<>();
     public static Timestamp selectedNextAvailableDate;
@@ -78,9 +81,12 @@ public class Common {
     public static boolean has_User_Pressed_Back_Button_on_Acknowledgement_Screen;
     public static ComplaintClosingAcnowledgeFragment fragment_acknowledge;
     public static Parcelable recyclerViewState;
+    public static String complaintIdFromNotification;
+    public static boolean isAppOpenedFromNotification ;
 
     public static CompositeDisposable compositeDisposable = new CompositeDisposable();
     public static IFCMService ifcmService = (RetrofitFCMClient.getInstance()).create(IFCMService.class);
+
 
     public static void showSnackBarAtTop(String text, String color, int textColor, Activity activity) {
         TSnackbar snackbar = TSnackbar.make(activity.findViewById(android.R.id.content), text, TSnackbar.LENGTH_LONG);

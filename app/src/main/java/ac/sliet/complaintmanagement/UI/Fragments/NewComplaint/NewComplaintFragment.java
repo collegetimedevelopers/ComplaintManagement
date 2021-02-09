@@ -156,7 +156,7 @@ public class NewComplaintFragment extends Fragment {
         documentReference.set(complaintModel)
                 .addOnSuccessListener(aVoid -> {
                     progressBar.setVisibility(View.GONE);
-                    Common.pushNotificationToTopic("New Complaint", "Complaint Filed By " + Common.currentUser.getUserName() + " with complaint id" + complaintModel.getComplaintId(),
+                    Common.pushNotificationToTopic("New Complaint", "Complaint Filed By " + Common.currentUser.getUserName() + " with complaint id " + complaintModel.getComplaintId(),
                             complaintModel.getComplaintId(), complaintModel.getComplaintCategory(),
                             getActivity(),progressBar);
 

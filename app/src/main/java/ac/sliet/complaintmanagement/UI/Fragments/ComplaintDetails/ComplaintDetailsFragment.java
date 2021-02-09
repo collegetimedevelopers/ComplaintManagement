@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.baoyachi.stepview.VerticalStepView;
@@ -96,8 +97,16 @@ public class ComplaintDetailsFragment extends Fragment {
 
     @BindView(R.id.comp_detail_items_recycler_parent_card)
     CardView recyclerParentCard;
+
     @BindView(R.id.comp_detail_comp_items_recycler)
     RecyclerView replacedItemsRecyclerView;
+
+    @BindView(R.id.comp_detail_progressBar)
+    ProgressBar progressBar;
+
+
+    @BindView(R.id.comp_detail_content_linear_layout)
+    LinearLayout contentLayout;
 
     public static ComplaintDetailsFragment newInstance() {
         return new ComplaintDetailsFragment();
@@ -112,12 +121,16 @@ public class ComplaintDetailsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_complaint_details, container, false);
         unbinder = ButterKnife.bind(this, root);
 
+        progressBar.setVisibility(View.VISIBLE);
+
         mViewModel.getComplaintModel().observe(getViewLifecycleOwner(), new Observer<ComplaintModel>() {
             @Override
             public void onChanged(ComplaintModel complaintModel) {
                 if (complaintModel != null) {
-                    setValuesToFields(complaintModel);
 
+                    setValuesToFields(complaintModel);
+                    contentLayout.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
 
                 }
             }
