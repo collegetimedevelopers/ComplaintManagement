@@ -4,6 +4,7 @@ import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.ClipData;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -35,6 +36,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -130,6 +132,8 @@ public class MarkCompletedFragment extends Fragment {
                 }
 
 
+
+
                 if (Common.selectedComplaint.getStatus()==Common.COMPLAINT_STATUS_COMPLETED)
                 {
                     closeComplaint.setVisibility(View.GONE);
@@ -148,6 +152,8 @@ public class MarkCompletedFragment extends Fragment {
             recyclerParentCard.setVisibility(View.GONE);
 
         }
+
+
 
 
         setListeners();
@@ -262,15 +268,20 @@ public class MarkCompletedFragment extends Fragment {
         updateMap.put("complaintClosingDate", FieldValue.serverTimestamp());
 
         if (!noFresh_DismantleCheck.isChecked()) {
-            System.out.println("size of itemlist = " + Common.addedItemList.size());
+
             updateMap.put("itemsReplaced", Common.addedItemList);
-//            Common.addedItemList.clear();
+            List<ItemModel> itemsList = new ArrayList<>();
+
+            itemsList.addAll(Common.addedItemList); // this is to make a  deep copy so that when we clear the common.addedItemList ,the Common.selectedComplaint.getItemsReplaced()
+            //list doesn't becomes empty;
+
+            Common.selectedComplaint.setItemsReplaced(itemsList); // this is to update the local data
 
         } else {
             try {
                 Common.addedItemList.clear();
-            } finally {
-
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 

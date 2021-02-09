@@ -15,10 +15,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
 
 import ac.sliet.complaintmanagement.Adapters.MyComplaintsAdapter;
+import ac.sliet.complaintmanagement.Common.Common;
 import ac.sliet.complaintmanagement.Model.ComplaintModel;
 import ac.sliet.complaintmanagement.R;
 import butterknife.BindView;
@@ -39,6 +43,11 @@ public class MyComplaintsFragment extends Fragment {
 
     @BindView(R.id.my_com_empty_txt)
     TextView empty_txt;
+
+
+    @BindView(R.id.my_com_swipe_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
+
 
     LinearLayoutManager linearLayoutManager;
 
@@ -71,13 +80,51 @@ public class MyComplaintsFragment extends Fragment {
                     recyclerView.setHasFixedSize(true);
                     recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), linearLayoutManager.getOrientation()));
                     recyclerView.setAdapter(myComplaintsAdapter);
+                  //  swipeRefreshLayout.pro
 
+                    try {
+                        swipeRefreshLayout.setRefreshing(false);
+                        recyclerView.getLayoutManager().onRestoreInstanceState(Common.recyclerViewState);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 progressBar.setVisibility(View.GONE);
 
             }
         });
 
+
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //this is to retain the state of recycler view during the whole app lifecycle on a particular app launch
+                //thus we are storing the state of recycler view in common
+                Common.recyclerViewState = recyclerView.getLayoutManager().onSaveInstanceState();
+
+
+            }
+        });
+
+
+
+        swipeRefreshLayout.setColorScheme(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                myComplaintsViewModel.getComplaintsFromFireStore();
+
+            }
+        });
 
         return root;
     }

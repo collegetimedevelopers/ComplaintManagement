@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.androidadvance.topsnackbar.TSnackbar;
 import com.chaos.view.PinView;
+import com.google.android.gms.auth.api.phone.SmsCodeAutofillClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
@@ -50,6 +51,8 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     PhoneAuthProvider phoneAuthProvider;
     PhoneAuthCredential phoneAuthCredential;
     PhoneAuthProvider.OnVerificationStateChangedCallbacks onVerificationStateChangedCallbacks;
+    PhoneAuthOptions options;
+
 
     String phoneNumber, verificationID;
 
@@ -79,14 +82,20 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_phone);
 
+
         unbinder = ButterKnife.bind(this);
         firebaseAuth = FirebaseAuth.getInstance();
+
 
         onVerificationStateChangedCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
                 System.out.println("In verification completed    ");
+
                 loginUser(phoneAuthCredential);
+
+                if (null != phoneAuthCredential.getSmsCode())
+                    pinView.setText(phoneAuthCredential.getSmsCode());
 
 
             }
@@ -99,24 +108,29 @@ public class VerifyPhoneActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+            public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken resendingToken) {
 
-                forceResendingToken = forceResendingToken;
+                forceResendingToken = resendingToken;
                 verificationID = verificationId;
+
+                sendOtp.setText("Resend OTP");
 
                 TSnackbar snackbar = TSnackbar.make(findViewById(android.R.id.content), "Code Sent", TSnackbar.LENGTH_LONG);
                 View snackbarView = snackbar.getView();
                 snackbarView.setBackgroundColor(Color.parseColor("#12B517"));
                 TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
-                textView.setTextColor(Color.YELLOW);
+                textView.setTextColor(Color.WHITE);
                 textView.setGravity(Gravity.CENTER);
                 snackbar.show();
                 progressBar.setVisibility(View.GONE);
             }
         };
 
+
+
         setListeners();
     }
+
 
     private void loginUser(PhoneAuthCredential phoneAuthCredential) {
 
@@ -241,13 +255,14 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     private void sendOTPToUser() {
         progressBar.setVisibility(View.VISIBLE);
 
-        PhoneAuthOptions options =
-                PhoneAuthOptions.newBuilder(firebaseAuth)
-                        .setPhoneNumber(phoneNumber)       // Phone number to verify
-                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                        .setActivity(this)                 // Activity (for callback binding)
-                        .setCallbacks(onVerificationStateChangedCallbacks)          // OnVerificationStateChangedCallbacks
-                        .build();
+        options = PhoneAuthOptions.newBuilder(firebaseAuth)
+                .setPhoneNumber(phoneNumber)       // Phone number to verify
+                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                .setActivity(VerifyPhoneActivity.this)// Activity (for callback binding)
+
+                .setCallbacks(onVerificationStateChangedCallbacks)          // OnVerificationStateChangedCallbacks
+                .build();
+
         PhoneAuthProvider.verifyPhoneNumber(options);
     }
 

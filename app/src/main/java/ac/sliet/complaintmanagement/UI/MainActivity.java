@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             // below method is used to navigate without pushing fragment in backstack and using mobile navigation direction
             NavOptions.Builder navBuilder = new NavOptions.Builder();
             NavOptions navOptions = navBuilder.setPopUpTo(R.id.navigation_complaint_closing_acknowledge,true).build();
-            NavHostFragment.findNavController(Common.fragment_acknowledge).navigate(R.id.navigation_dashboard,null,navOptions);
+            NavHostFragment.findNavController(Common.fragment_acknowledge).navigate(R.id.navigation_complaint_details,null,navOptions);
 
 
 

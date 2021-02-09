@@ -76,7 +76,6 @@ public class NewComplaintFragment extends Fragment {
         });
 
 
-
         unbinder = ButterKnife.bind(this, root);
         calendarView_availaibleOnDate.setMinDate(System.currentTimeMillis() - 1000);
 
@@ -88,14 +87,12 @@ public class NewComplaintFragment extends Fragment {
         complaintCategorySpinner.setAdapter(spinnerAdapter);
 
 
-
         calendarView_availaibleOnDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth)
-            {
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 GregorianCalendar cal = new GregorianCalendar(year, month, dayOfMonth);
 
-                 availableDateTimestamp = new Timestamp(cal.getTime());
+                availableDateTimestamp = new Timestamp(cal.getTime());
 
             }
         });
@@ -118,8 +115,7 @@ public class NewComplaintFragment extends Fragment {
                     return;
                 }
 
-                if (null==availableDateTimestamp)
-                {
+                if (null == availableDateTimestamp) {
                     Common.showSnackBarAtTop("Please select your availability date", Common.ERROR_COLOR, Color.WHITE, getActivity());
                     return;
                 }
@@ -132,7 +128,6 @@ public class NewComplaintFragment extends Fragment {
 
         return root;
     }
-
 
 
     private void uploadComplaintToFireStore() {
@@ -156,14 +151,12 @@ public class NewComplaintFragment extends Fragment {
         complaintModel.setPhoneNumber(Common.currentUser.getPhoneNumber());
         complaintModel.setComplaintCategory(complaintCategorySpinner.getSelectedItem().toString());
 
-        documentReference.set(complaintModel).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                progressBar.setVisibility(View.GONE);
-                Common.showSnackBarAtTop("Complaint Filed Successfully 😁", Common.GREEN_COLOR, Color.WHITE, getActivity());
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+        documentReference.set(complaintModel)
+                .addOnSuccessListener(aVoid -> {
+                    progressBar.setVisibility(View.GONE);
+                    Common.showSnackBarAtTop("Complaint Filed Successfully 😁", Common.GREEN_COLOR, Color.WHITE, getActivity());
+                    //todo: uncomment and call clearFields();
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 progressBar.setVisibility(View.GONE);
@@ -171,5 +164,13 @@ public class NewComplaintFragment extends Fragment {
                 Common.showSnackBarAtTop("Failed to File Complaint 😑", Common.ERROR_COLOR, Color.WHITE, getActivity());
             }
         });
+    }
+
+    private void clearFields() {
+        availableDateTimestamp = null;
+        problemDescriptionEdtTxt.getText().clear();
+        intercomEdit.getEditText().getText().clear();
+        complaintCategorySpinner.setSelection(0);
+
     }
 }

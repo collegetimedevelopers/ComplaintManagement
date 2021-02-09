@@ -65,8 +65,9 @@
                     android:background="#F1F1F1"
                     android:fontFamily="@font/frank_ruhl_libre_medium"
                     android:gravity="center"
+                    android:layout_marginTop="10dp"
                     android:padding="15dp"
-                    android:text="Availaible on Date"
+                    android:text="Choose your preferred Date"
                     android:textSize="16sp" />
 
                 <CalendarView

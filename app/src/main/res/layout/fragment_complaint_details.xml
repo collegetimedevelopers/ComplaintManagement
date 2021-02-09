@@ -226,7 +226,7 @@
 <!--For items added or replaced card-->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="wrap_content"
             app:cardUseCompatPadding="true"
             android:elevation="8dp"
             android:id="@+id/comp_detail_items_recycler_parent_card"
@@ -253,14 +253,136 @@
                     android:layout_height="2dp"
                     android:background="#D1D1D1"/>
 
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="-2dp"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="#fff"
+                        android:textStyle="italic">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+
+                            android:weightSum="10">
+
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_weight="5.1"
+                                android:background="@android:color/white"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/txt_added_item_name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:fontFamily="@font/frank_ruhl_libre_medium"
+                                    android:gravity="start|center_vertical"
+                                    android:hint="Item Name"
+                                    android:maxLines="2"
+                                    android:textColor="#5C5B5B"
+                                    android:textAlignment="viewStart"
+
+                                    android:textSize="15sp" />
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_weight="3.5"
+                                android:background="@android:color/white"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/txt_added_item_gp_no"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/frank_ruhl_libre_medium"
+                                    android:gravity="start"
+                                    android:hint="G.P No."
+                                    android:maxLines="2"
+
+                                    android:textSize="15sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="4dp"
+                                android:layout_weight="1.4"
+                                android:background="#fff"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/added_item_quantity"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center_vertical"
+                                    android:background="#fff"
+                                    android:fontFamily="@font/frank_ruhl_libre_medium"
+                                    android:gravity="start"
+
+                                    android:text="Qty." />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="250dp"
                     android:layout_marginTop="10dp"
                     android:nestedScrollingEnabled="false"
                     android:id="@+id/comp_detail_comp_items_recycler"
                     />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:background="#D1D1D1"/>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/error_color"
+                    android:padding="8dp"
+                    android:background="#BABDF6"
+                    android:fontFamily="@font/cantata_one"
+                    android:text="Name of materials written in red reflects dismantled item."/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/mate_green"
+                    android:padding="8dp"
+                    android:fontFamily="@font/cantata_one"
+                    android:background="#BABDF6"
+
+                    android:text="Name of materials written in green reflects new item. "/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

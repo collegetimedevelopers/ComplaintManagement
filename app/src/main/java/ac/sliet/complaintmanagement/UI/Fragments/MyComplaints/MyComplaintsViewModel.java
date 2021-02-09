@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -40,9 +41,11 @@ public class MyComplaintsViewModel extends ViewModel {
     }
 
 
-    private void getComplaintsFromFireStore() {
+    public void getComplaintsFromFireStore() {
+
+        System.out.println("Refreshed");
         FirebaseFirestore.getInstance().collection(Common.COMPLAINT_COLLECTION_REFERENCE)
-                .whereEqualTo("complainantUid", Common.currentUser.getUid())
+                .whereEqualTo("complainantUid", FirebaseAuth.getInstance().getUid())
                 .orderBy("complaintFilingDate", Query.Direction.DESCENDING)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -55,9 +58,8 @@ public class MyComplaintsViewModel extends ViewModel {
                    {
                         ComplaintModel complaintModel = documentSnapshot.toObject(ComplaintModel.class);
                         tempList.add(complaintModel);
-                        if (null!=complaintModel.getItemsReplaced())
-                        System.out.println("replaced item = "+complaintModel.getItemsReplaced().size());
-                    }
+
+                   }
                     setComplaintsList(tempList);
                 }
                 else {
@@ -82,6 +84,8 @@ public class MyComplaintsViewModel extends ViewModel {
 
     public void setComplaintsList(List<ComplaintModel> complaints) {
         complaintsList.setValue(complaints);
+        System.out.println("value set");
+
     }
 
 }

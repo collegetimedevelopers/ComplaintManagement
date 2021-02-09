@@ -63,11 +63,8 @@
         android:label="@string/title_closing_acknowledge"
         tools:layout="@layout/fragment_complaint_closing_acnowledge" >
         <action
-            android:id="@+id/action_navigation_complaint_closing_acknowledge_to_navigation_dashboard"
-            app:destination="@id/navigation_dashboard"
-            app:launchSingleTop="true"
-            app:popUpTo="@+id/main_nav_graph"
-            app:popUpToInclusive="true"/>
+            android:id="@+id/action_navigation_complaint_closing_acknowledge_to_navigation_complaint_details"
+            app:destination="@id/navigation_complaint_details" />
     </fragment>
 
 

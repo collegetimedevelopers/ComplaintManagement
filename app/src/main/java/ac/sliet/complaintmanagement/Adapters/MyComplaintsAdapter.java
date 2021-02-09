@@ -66,7 +66,9 @@ public class MyComplaintsAdapter extends RecyclerView.Adapter<MyComplaintsAdapte
         holder.complaintIntercom.setText(complaintModelList.get(position).getInterComNumber());
         holder.complaintCategory.setText(complaintModelList.get(position).getComplaintCategory());
 
-        holder.complaintStatus.setText(Common.getComplaintStatus(complaintModelList.get(position).getStatus()));
+        Date availabilityDate = new Date(complaintModelList.get(position).getAvailableOnDate().toDate().getTime());
+
+        holder.complaintStatus.setText(Common.getComplaintStatus(complaintModelList.get(position).getStatus(),availabilityDate,context));
 
 
 
