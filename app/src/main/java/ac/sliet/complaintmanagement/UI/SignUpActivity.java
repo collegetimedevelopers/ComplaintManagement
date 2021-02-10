@@ -129,6 +129,7 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
 
+                        Common.currentUser = userModel;
                         Common.showSnackBarAtTop("Signed Up Successfully", Common.GREEN_COLOR, Color.WHITE, SignUpActivity.this);
                         Common.updateToken(SignUpActivity.this);
                         startActivity(new Intent(SignUpActivity.this,MainActivity.class));

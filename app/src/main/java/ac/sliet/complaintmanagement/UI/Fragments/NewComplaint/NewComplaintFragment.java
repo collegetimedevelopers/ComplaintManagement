@@ -133,6 +133,7 @@ public class NewComplaintFragment extends Fragment {
 
 
     private void uploadComplaintToFireStore() {
+
         progressBar.setVisibility(View.VISIBLE);
 
         DocumentReference documentReference = FirebaseFirestore.getInstance().collection(Common.COMPLAINT_COLLECTION_REFERENCE).document();

@@ -330,7 +330,7 @@ public class ProfileFragment extends Fragment {
 
         String[] split = userModel.getAddress().split("Type");
         String userHouseNumber = split[0].replace(",", "");
-        String userTypeNumber = split[1].substring(0, split[1].indexOf(","));
+        String userTypeNumber = split[1].substring(0, split[1].indexOf(","));// here type number , old / new remains so we need to extract type number and remove old / new
 
         phoneNumber.setText(userModel.getPhoneNumber());
         typeNumber.getEditText().setText(userTypeNumber.trim());
@@ -346,6 +346,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onSuccess(Void aVoid) {
 
+                        Common.currentUser = userModel;
                         Common.showSnackBarAtTop("Updated Successfully", Common.GREEN_COLOR, Color.WHITE, getActivity());
 
                     }
