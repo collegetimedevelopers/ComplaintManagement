@@ -126,7 +126,7 @@ public class ComplaintClosingAcnowledgeFragment extends Fragment {
         Common.has_User_Pressed_Back_Button_on_Acknowledgement_Screen = true;
         Common.fragment_acknowledge = ComplaintClosingAcnowledgeFragment.this;
 
-        Common.pushNotificationToTopic("Complaint Closed", "Complaint with id : " + Common.selectedComplaint.getComplaintId()+" has been closed by "+Common.selectedComplaint.getComplainantName(),
+        Common.pushNotificationToTopic("Complaint Closed", "Complaint with ID : " + Common.selectedComplaint.getComplaintId().toUpperCase()+" has been closed by "+Common.selectedComplaint.getComplainantName(),
                 Common.selectedComplaint.getComplaintId(), Common.selectedComplaint.getComplaintCategory(),
                 getActivity(),null);
 

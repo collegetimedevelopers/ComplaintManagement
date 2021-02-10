@@ -194,7 +194,7 @@ public class ComplaintDetailsFragment extends Fragment {
                         Common.selectedComplaint.setPostponedDate(postponeTime);
                         Common.selectedComplaint.setAvailableOnDate(event.getSelectedDate());
 
-                        Common.pushNotificationToTopic("Complaint Postponed", "Complaint with id : " + Common.selectedComplaint.getComplaintId()+" has been delayed by "+Common.selectedComplaint.getComplainantName(),
+                        Common.pushNotificationToTopic("Complaint Postponed", "Complaint with ID : " + Common.selectedComplaint.getComplaintId().toUpperCase()+" has been delayed by "+Common.selectedComplaint.getComplainantName(),
                                 Common.selectedComplaint.getComplaintId(), Common.selectedComplaint.getComplaintCategory(),
                                 getActivity(),progressBar);
 
@@ -287,7 +287,18 @@ public class ComplaintDetailsFragment extends Fragment {
 
         list.add("Requested on " + dateFormat.format(filingDate) + " at " + timeFormat.format(filingDate));
 
-        list.add("Accepted");
+        if (complaintModel.getStatus()==Common.COMPLAINT_STATUS_REQUESTED)
+        list.add("Will be accepted");
+        else
+        {
+            if (complaintModel.getStatus()>= Common.COMPLAINT_STATUS_ACCEPTED)
+            {        Date acceptanceDate = new Date(complaintModel.getComplaintAcceptanceDate().toDate().getTime());
+
+                list.add("Accepted on "+dateFormat.format(acceptanceDate)+" at "+timeFormat.format(acceptanceDate));
+
+            }
+        }
+
 
         if (!complaintModel.isPostponed()) {
 

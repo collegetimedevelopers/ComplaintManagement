@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
          if (Common.isAppOpenedFromNotification)// if the app is opened from notification we will extract complaint id
          {
              Common.complaintIdFromNotification = getIntent().getStringExtra(Common.COMPLAINT_ID_FROM_NOTIFICATION);
+             navView.getMenu().getItem(1).setChecked(true);// to show my complaints as selected
              OpenComplaintDetails(new OpenComplaintDetailsEvent(true));
          }
 

@@ -25,6 +25,8 @@ public class ComplaintDetailsViewModel extends ViewModel {
 
             if (Common.isAppOpenedFromNotification) {
 
+                Common.isAppOpenedFromNotification = false; // disabling because when next time user clicks on a complaint then the vakues should be set locally
+
                 FirebaseFirestore.getInstance().collection(Common.COMPLAINT_COLLECTION_REFERENCE)
                         .document(Common.complaintIdFromNotification)
                         .get()

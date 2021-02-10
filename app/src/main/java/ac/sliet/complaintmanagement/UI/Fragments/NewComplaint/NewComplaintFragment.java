@@ -157,7 +157,8 @@ public class NewComplaintFragment extends Fragment {
         documentReference.set(complaintModel)
                 .addOnSuccessListener(aVoid -> {
 
-                    Common.pushNotificationToTopic("New Complaint", "Complaint Filed By " + Common.currentUser.getUserName() + " with complaint id " + complaintModel.getComplaintId(),
+                    Common.pushNotificationToTopic("New Complaint",
+                            "Complaint Filed By " + Common.currentUser.getUserName() + " with complaint ID : " + complaintModel.getComplaintId().toUpperCase(),
                             complaintModel.getComplaintId(), complaintModel.getComplaintCategory(),
                             getActivity(),progressBar);
 

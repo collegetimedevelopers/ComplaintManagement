@@ -11,8 +11,16 @@ public class ComplaintModel {
     String complaintId;
     int status;
     boolean satisfactory;
-    Timestamp availableOnDate, postponedDate,complaintFilingDate,complaintClosingDate;
+    Timestamp availableOnDate, postponedDate,complaintFilingDate,complaintClosingDate,complaintAcceptanceDate;
     List<ItemModel> itemsReplaced;
+
+    public Timestamp getComplaintAcceptanceDate() {
+        return complaintAcceptanceDate;
+    }
+
+    public void setComplaintAcceptanceDate(Timestamp complaintAcceptanceDate) {
+        this.complaintAcceptanceDate = complaintAcceptanceDate;
+    }
 
     public ComplaintModel() {
 
