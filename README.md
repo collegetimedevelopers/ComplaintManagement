@@ -1,6 +1,7 @@
 # ComplaintManagement
 An android application for complaint management of Estate Office SLIET 
-This application is made by Kamal nayan 
+The complainant side application has been made by Kamal Nayan 
+And the application for Estate office has been made by Shubhangam Garg.
 
 Purpose: To make the tedious proccess way easier so that it can be done on just few taps and thus save time of both Complaintant and CTO's.
    Faculties can file complaint regarding their residential quarter
