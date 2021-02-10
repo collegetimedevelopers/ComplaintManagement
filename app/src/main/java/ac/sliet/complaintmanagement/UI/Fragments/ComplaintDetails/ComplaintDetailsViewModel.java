@@ -35,6 +35,7 @@ public class ComplaintDetailsViewModel extends ViewModel {
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
 
                                 Common.selectedComplaint=documentSnapshot.toObject(ComplaintModel.class);
+
                                 setComplaintModel(Common.selectedComplaint);
                             }
                         })

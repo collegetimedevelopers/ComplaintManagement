@@ -110,7 +110,7 @@ public class FCMService extends FirebaseMessagingService {
             }
             if (status == 2) {
                 builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
-                        R.drawable.attending));
+                        R.drawable.noti_attend));
 
             }
 
