@@ -193,6 +193,11 @@ public class ComplaintDetailsFragment extends Fragment {
                         Timestamp postponeTime = new com.google.firebase.Timestamp(calendar.getTime());
                         Common.selectedComplaint.setPostponedDate(postponeTime);
                         Common.selectedComplaint.setAvailableOnDate(event.getSelectedDate());
+
+                        Common.pushNotificationToTopic("Complaint Postponed", "Complaint with id : " + Common.selectedComplaint.getComplaintId()+" has been delayed by "+Common.selectedComplaint.getComplainantName(),
+                                Common.selectedComplaint.getComplaintId(), Common.selectedComplaint.getComplaintCategory(),
+                                getActivity(),progressBar);
+
                         // to update ui
 
                         try {

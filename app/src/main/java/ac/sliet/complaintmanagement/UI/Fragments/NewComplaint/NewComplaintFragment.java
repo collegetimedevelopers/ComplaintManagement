@@ -156,21 +156,19 @@ public class NewComplaintFragment extends Fragment {
 
         documentReference.set(complaintModel)
                 .addOnSuccessListener(aVoid -> {
-                    progressBar.setVisibility(View.GONE);
+
                     Common.pushNotificationToTopic("New Complaint", "Complaint Filed By " + Common.currentUser.getUserName() + " with complaint id " + complaintModel.getComplaintId(),
                             complaintModel.getComplaintId(), complaintModel.getComplaintCategory(),
                             getActivity(),progressBar);
 
                     clearFields();
 
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressBar.setVisibility(View.GONE);
+                }).addOnFailureListener(e -> {
 
-                Common.showSnackBarAtTop("Failed to File Complaint 😑", Common.ERROR_COLOR, Color.WHITE, getActivity());
-            }
-        });
+                    progressBar.setVisibility(View.GONE);
+
+                    Common.showSnackBarAtTop("Failed to File Complaint 😑", Common.ERROR_COLOR, Color.WHITE, getActivity());
+                });
     }
 
     private void clearFields() {

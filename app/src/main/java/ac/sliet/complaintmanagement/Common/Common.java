@@ -73,7 +73,7 @@ public class Common {
     public static final String TOKEN_REF = "ComplainantToken";
     public static final String IS_OPENED_FROM_NOTIFICATION = "IS_OPENED_FROM_NOTIFICATION";
     public static final String COMPLAINT_ID_FROM_NOTIFICATION = "COMPLAINT_ID_FROM_NOTIFICATION";
-    public static final String NOTI_STATUS ="status";
+    public static final String NOTI_STATUS = "status";
 
     public static List<ItemModel> addedItemList = new ArrayList<>();
     public static Timestamp selectedNextAvailableDate;
@@ -82,7 +82,7 @@ public class Common {
     public static ComplaintClosingAcnowledgeFragment fragment_acknowledge;
     public static Parcelable recyclerViewState;
     public static String complaintIdFromNotification;
-    public static boolean isAppOpenedFromNotification ;
+    public static boolean isAppOpenedFromNotification;
 
     public static CompositeDisposable compositeDisposable = new CompositeDisposable();
     public static IFCMService ifcmService = (RetrofitFCMClient.getInstance()).create(IFCMService.class);
@@ -119,8 +119,8 @@ public class Common {
         }
 
     }
-    public static String getMessagingTopic(String topic)
-    {
+
+    public static String getMessagingTopic(String topic) {
         return new StringBuilder("/topics/").append(topic).toString();
     }
 
@@ -136,30 +136,29 @@ public class Common {
 
         compositeDisposable
                 .add(ifcmService.sendNotification(fcmSendData)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<FCMResponse>() {
-            @Override
-            public void accept(FCMResponse fcmResponse) throws Exception {
-                if (fcmResponse.getMessage_id() != 0)
-                {
-                    System.out.println("message id ="+fcmResponse.getMessage_id());
-                    Common.showSnackBarAtTop("Complaint Filed and notified CTO Successfully 😁", Common.GREEN_COLOR, Color.WHITE,activity );
-                    if (null!=progressBar)
-                    {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }
-                else {
-                    System.out.println("Error in noti push= "+fcmResponse.getFailure());
-                    Common.showSnackBarAtTop("Complaint Filed Successfully but failed to notify CTO", Common.GREEN_COLOR, Color.WHITE, activity);
-                    if (null!=progressBar)
-                    {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }
-            }
-        }));
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<FCMResponse>() {
+                            @Override
+                            public void accept(FCMResponse fcmResponse) throws Exception {
+                                if (fcmResponse.getMessage_id() != 0) {
+
+                                    if (title.equals("New Complaint")) //because same function is used to push notification and in some coses we dont want to show snackbar
+                                        Common.showSnackBarAtTop("Complaint Filed and notified CTO Successfully 😁", Common.GREEN_COLOR, Color.WHITE, activity);
+                                    if (null != progressBar) {
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                } else {
+
+
+                                    if (title.equals("New Complaint")) //because same function is used to push notification and in some coses we dont want to show snackbar
+                                        Common.showSnackBarAtTop("Complaint Filed Successfully but failed to notify CTO", Common.GREEN_COLOR, Color.WHITE, activity);
+                                    if (null != progressBar) {
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                }
+                            }
+                        }));
 
     }
 
@@ -173,7 +172,7 @@ public class Common {
                             .setValue(new TokenModel(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber(), newToken)).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(context,"Some Error occurred",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Some Error occurred", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } catch (Exception e) {
@@ -182,12 +181,11 @@ public class Common {
 
             }
         }).addOnFailureListener(e -> {
-            Toast.makeText(context,"Some Error occurred",Toast.LENGTH_SHORT).show();
-            Log.e("UPDATE_TOKEN",e.getMessage());
+            Toast.makeText(context, "Some Error occurred", Toast.LENGTH_SHORT).show();
+            Log.e("UPDATE_TOKEN", e.getMessage());
         });
 
     }
-
 
 
 }
